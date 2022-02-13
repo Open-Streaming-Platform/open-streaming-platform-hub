@@ -27,10 +27,9 @@ class api_server_root(Resource):
 
         args = serverAdd.parse_args()
 
-        if 'address' in args and 'protocol' in args and 'port' in args:
+        if 'address' in args and 'protocol' in args:
             address = args['address'].lower()
             protocol = args['protocol'].lower()
-            port = int(args['port'])
 
             existingServerQuery = servers.server.query.filter_by(serverAddress=address).first()
             if existingServerQuery is not None:
@@ -39,7 +38,7 @@ class api_server_root(Resource):
             if protocol != "http" and protocol != "https":
                 return {'results': {'success': False, 'message': 'Error: Invalid Server Protocol'}}, 400
 
-            newServer = servers.server(address, protocol, port)
+            newServer = servers.server(address, protocol)
             serverId = newServer.serverId
             token = newServer.serverToken
             db.session.add(newServer)
