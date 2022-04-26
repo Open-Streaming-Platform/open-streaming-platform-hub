@@ -5,7 +5,7 @@ FROM ubuntu:latest
 WORKDIR /app
 
 # Getting the updates for Ubuntu and installing python into our environment
-RUN apt-get -y update  && apt-get install -y python3 python3-pip
+RUN apt-get -y update && apt-get upgrade -y && apt-get install -y python3 python3-pip
 
 # Install Python Dependencies
 COPY requirements.txt requirements.txt
