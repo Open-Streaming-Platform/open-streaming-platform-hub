@@ -11,3 +11,18 @@ steps:
       from_secret: docker_password
     repo: deamos/osp-hub-api
     auto_tag: true
+- name: publish-test
+  image: appleboy/drone-ssh
+  settings:
+    host:
+      from_secret: docker_server
+    port: 22
+    username:
+      from_secret: username
+    key:
+      from_secret: ssh_key
+    script:
+      - cd /compose-files/open-streaming-platform-hub-api && /bin/bash ./update.sh
+  when:
+    event:
+      - push
