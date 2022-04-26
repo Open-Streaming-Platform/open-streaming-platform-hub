@@ -19,8 +19,8 @@ steps:
     port: 22
     username:
       from_secret: username
-    key:
-      from_secret: ssh_key
+    password:
+      from_secret: password
     script:
       - cd /compose-files/open-streaming-platform-hub-api && /bin/bash ./update.sh
   when:
