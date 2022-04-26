@@ -12,4 +12,4 @@ steps:
     repo: deamos/osp-hub-api
     auto_tag: true
 - name: deploy-osp
-    image: deamos/osp-hub-api:latest
+    image: deamos/osp-hub-api
