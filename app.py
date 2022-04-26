@@ -3,8 +3,12 @@
 #from gevent import monkey
 #monkey.patch_all(thread=True)
 
-# Import Config
-import config
+import os
+from dotenv import load_dotenv
+
+# Load Environment Variables
+load_dotenv()
+dbLocation = os.getenv('OSP_HUB_DB')
 
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
@@ -16,9 +20,9 @@ from classes import channels
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = config.dbLocation
+app.config['SQLALCHEMY_DATABASE_URI'] = dbLocation
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-if config.dbLocation[:6] != "sqlite":
+if dbLocation[:6] != "sqlite":
     app.config['SQLALCHEMY_MAX_OVERFLOW'] = -1
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 300
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 600
