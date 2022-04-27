@@ -14,4 +14,4 @@ COPY . /app
 VOLUME /app/db
 
 # Run app.py when the container launches
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
