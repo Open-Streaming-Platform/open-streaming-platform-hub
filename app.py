@@ -11,6 +11,9 @@ load_dotenv()
 dbLocation = os.getenv('OSP_HUB_DB')
 debug = os.getenv('OSP_HUB_DEBUG')
 
+if debug is None:
+    debug = False
+
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
 from flask_migrate import Migrate, upgrade, init, migrate
