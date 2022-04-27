@@ -1,5 +1,5 @@
 kind: pipeline
-name: default
+name: test
 
 steps:
 - name: build
@@ -11,6 +11,9 @@ steps:
       from_secret: docker_password
     repo: deamos/osp-hub-api
     auto_tag: true
+  when:
+    event:
+      - push
 - name: publish-test
   image: appleboy/drone-ssh
   settings:
