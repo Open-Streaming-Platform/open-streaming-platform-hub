@@ -15,7 +15,7 @@ serverDelete.add_argument('address', type=str)
 serverDelete.add_argument('token', type=str)
 
 @api.route('/')
-@api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs', 'port': 'Server Port Number'})
+@api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs'})
 class api_server_root(Resource):
     @api.expect(serverAdd)
     @api.doc(responses={200: 'Success', 400: 'Request Error'})
