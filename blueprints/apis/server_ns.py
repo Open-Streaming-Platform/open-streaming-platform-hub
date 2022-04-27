@@ -7,12 +7,12 @@ from classes.shared import db
 api = Namespace('server', description='Server Related Queries and Functions')
 
 serverAdd = reqparse.RequestParser()
-serverAdd.add_argument('address', type=str)
-serverAdd.add_argument('protocol', type=str)
+serverAdd.add_argument('address', type=str, required=True)
+serverAdd.add_argument('protocol', type=str, required=True)
 
 serverDelete = reqparse.RequestParser()
-serverDelete.add_argument('address', type=str)
-serverDelete.add_argument('token', type=str)
+serverDelete.add_argument('address', type=str, required=True)
+serverDelete.add_argument('token', type=str, required=True)
 
 @api.route('/')
 @api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs'})
@@ -27,8 +27,8 @@ class api_server_root(Resource):
         args = serverAdd.parse_args()
 
         if 'address' in args and 'protocol' in args:
-            address = args['address'].lower()
-            protocol = args['protocol'].lower()
+            address = args['address']
+            protocol = args['protocol']
 
             existingServerQuery = servers.server.query.filter_by(serverAddress=address).first()
             if existingServerQuery is not None:
