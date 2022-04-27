@@ -4,3 +4,4 @@ flask-migrate
 python-dotenv
 requests
 flask-sqlalchemy
+flask-script
