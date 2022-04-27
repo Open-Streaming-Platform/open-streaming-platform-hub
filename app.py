@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 # Load Environment Variables
 load_dotenv()
 dbLocation = os.getenv('OSP_HUB_DB')
+debug = os.getenv('OSP_HUB_DEBUG')
 
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
@@ -48,4 +49,4 @@ app.register_blueprint(debug_bp)
 app.register_blueprint(api_v1)
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', port=5000)
+    app.run('0.0.0.0', port=5000, debug=debug)
