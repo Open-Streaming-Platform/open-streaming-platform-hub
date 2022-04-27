@@ -36,5 +36,5 @@ class server(db.Model):
             'serverProtocol': self.serverProtocol,
             'serverActive': self.serverActive,
             'serverLastUpdate': self.serverLastUpdate,
-            'serverName': self.serverName,
+            'serverName': self.serverName
         }
