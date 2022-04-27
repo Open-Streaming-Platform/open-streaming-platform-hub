@@ -23,6 +23,6 @@ authorizations = {
 }
 
 api_v1 = Blueprint('api', __name__, url_prefix='/api')
-api = fixedAPI(api_v1, version='1.0', title='OSP Hub API', description='OSP Hub API', default='Primary', default_label='OSP Hub Primary Endpoints', authorizations=authorizations)
+api = Api(api_v1, version='1.0', title='OSP Hub API', description='OSP Hub API', default='Primary', default_label='OSP Hub Primary Endpoints', authorizations=authorizations)
 
 api.add_namespace(serverNS)
