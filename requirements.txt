@@ -1,4 +1,4 @@
 flask
 flask-restplus
 flask-migrate
-dotenv
+python-dotenv
