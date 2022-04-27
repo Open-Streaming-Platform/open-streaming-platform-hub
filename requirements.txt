@@ -2,3 +2,5 @@ flask
 flask-restplus
 flask-migrate
 python-dotenv
+requests
+flask-sqlalchemy
