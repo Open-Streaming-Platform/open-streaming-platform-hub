@@ -22,7 +22,7 @@ steps:
     password:
       from_secret: password
     script:
-      - cd /compose-files/open-streaming-platform-hub-api && /bin/bash ./update.sh
+      - cd /compose-files/open-streaming-platform-hub-api && sudo /bin/bash ./update.sh
   when:
     event:
       - push
