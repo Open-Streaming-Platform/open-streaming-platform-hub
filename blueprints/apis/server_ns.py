@@ -9,7 +9,6 @@ api = Namespace('server', description='Server Related Queries and Functions')
 serverAdd = reqparse.RequestParser()
 serverAdd.add_argument('address', type=str)
 serverAdd.add_argument('protocol', type=str)
-serverAdd.add_argument('port', type=int)
 
 serverDelete = reqparse.RequestParser()
 serverDelete.add_argument('address', type=str)
