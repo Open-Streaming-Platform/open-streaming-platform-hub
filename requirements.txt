@@ -1,5 +1,5 @@
 flask
-flask-restplus
+flask-restx
 flask-migrate
 python-dotenv
 requests
