@@ -7,12 +7,12 @@ from classes.shared import db
 api = Namespace('server', description='Server Related Queries and Functions')
 
 serverAdd = reqparse.RequestParser()
-serverAdd.add_argument('address', type=str, required=True)
-serverAdd.add_argument('protocol', type=str, required=True)
+serverAdd.add_argument('address', type=str, required=True, location='args')
+serverAdd.add_argument('protocol', type=str, required=True, location='args')
 
 serverDelete = reqparse.RequestParser()
-serverDelete.add_argument('address', type=str, required=True)
-serverDelete.add_argument('token', type=str, required=True)
+serverDelete.add_argument('address', type=str, required=True, location='args')
+serverDelete.add_argument('token', type=str, required=True, location='args')
 
 @api.route('/')
 @api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs'})
