@@ -3,7 +3,7 @@ from flask_script import Manager
 
 from app import app, db
 
-migrate = Migrate(app, db, 'db/migrations')
+migrate = Migrate(app, db, 'migrations')
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
