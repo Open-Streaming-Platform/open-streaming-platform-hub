@@ -17,6 +17,15 @@ serverDelete.add_argument('token', type=str, required=True, location=['args','fo
 @api.route('/')
 @api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs'})
 class api_server_root(Resource):
+    def get(self):
+        """
+        Lists all attached Servers
+        """
+
+        serversQuery = servers.server.query.all()
+        db.session.commit()
+        return {'results': [ob.serialize() for ob in serversQuery if ob.serverActive is True]}
+
     @api.expect(serverAdd)
     @api.doc(responses={200: 'Success', 400: 'Request Error'})
     def post(self):
