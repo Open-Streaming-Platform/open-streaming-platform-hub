@@ -11,7 +11,7 @@ serverAdd.add_argument('address', type=str, required=True, location=['args','for
 serverAdd.add_argument('protocol', type=str, required=True, location=['args','form'])
 
 serverDelete = reqparse.RequestParser()
-serverDelete.add_argument('address', type=str, required=True, location=['args','form'])
+serverDelete.add_argument('id', type=str, required=True, location=['args','form'])
 serverDelete.add_argument('token', type=str, required=True, location=['args','form'])
 
 @api.route('/')
