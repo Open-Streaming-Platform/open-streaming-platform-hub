@@ -15,7 +15,7 @@ serverDelete.add_argument('id', type=str, required=True, location=['args','form'
 serverDelete.add_argument('token', type=str, required=True, location=['args','form'])
 
 @api.route('/')
-@api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs'})
+@api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs', 'id': 'Server UUID', 'token': 'Server Auth Token'})
 class api_server_root(Resource):
     def get(self):
         """
