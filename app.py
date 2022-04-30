@@ -21,6 +21,7 @@ from flask_migrate import Migrate, upgrade, init, migrate
 # Modal Imports
 from classes import servers
 from classes import channels
+from classes import secrets
 
 app = Flask(__name__)
 
@@ -50,6 +51,18 @@ from blueprints.api import api_v1
 app.register_blueprint(root_bp)
 app.register_blueprint(debug_bp)
 app.register_blueprint(api_v1)
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
+
+# Generate Initial API Key
+apiKeyQuery = secrets.apikey.query.first()
+if apiKeyQuery is None:
+    newApiKey = secrets.apikey()
+    db.session.add(newApiKey)
+    print('Initial OSP Hub API Key: ' + newApiKey.apikey)
+db.session.commit()
 
 if __name__ == "__main__":
     app.run('0.0.0.0', port=5000, debug=debug)
