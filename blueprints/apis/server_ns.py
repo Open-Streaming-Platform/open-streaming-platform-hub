@@ -15,7 +15,6 @@ serverDelete.add_argument('id', type=str, required=True)
 serverDelete.add_argument('token', type=str, required=True)
 
 @api.route('/')
-@api.doc(params={'address': 'Full Domain of OSP Server', 'protocol':'HTTP or HTTPs', 'id': 'Server UUID', 'token': 'Server Auth Token'})
 class api_server_root(Resource):
     def get(self):
         """
@@ -27,6 +26,7 @@ class api_server_root(Resource):
         return {'results': [ob.serialize() for ob in serversQuery if ob.serverActive is True]}
 
     @api.expect(serverAdd)
+    @api.doc(params={'address': 'Full Domain of OSP Server', 'protocol': 'HTTP or HTTPs'})
     @api.doc(responses={200: 'Success', 400: 'Request Error'})
     def post(self):
         """
@@ -56,6 +56,7 @@ class api_server_root(Resource):
         return {'results': {'success': False, 'message': 'Error: Missing Required Arguments'}}, 400
 
     @api.expect(serverDelete)
+    @api.doc(params={'id': 'Server UUID', 'token': 'Server Auth Token'})
     @api.doc(responses={200: 'Success', 400: 'Request Error'})
     def delete(self):
         """

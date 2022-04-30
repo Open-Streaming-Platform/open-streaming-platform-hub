@@ -22,7 +22,7 @@ class server(db.Model):
         self.serverProtocol = serverProtocol
         self.serverActive = True
         self.serverToken = secrets.token_hex(32)
-        self.serverLastUpdate = str(datetime.datetime.now())
+        self.serverLastUpdate = datetime.datetime.now()
 
     def get_Url(self):
         fullUrl = self.serverProtocol + "://" + self.serverAddress + "/"
@@ -35,6 +35,6 @@ class server(db.Model):
             'serverAddress': self.serverAddress,
             'serverProtocol': self.serverProtocol,
             'serverActive': self.serverActive,
-            'serverLastUpdate': self.serverLastUpdate,
+            'serverLastUpdate': str(self.serverLastUpdate),
             'serverName': self.serverName
         }
