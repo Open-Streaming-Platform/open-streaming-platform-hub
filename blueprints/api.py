@@ -1,5 +1,5 @@
 from flask import Blueprint, url_for
-from flask_restx import Api, Resource, reqparse
+from flask_restplus import Api, Resource, reqparse
 
 from .apis.server_ns import api as serverNS
 

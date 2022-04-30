@@ -1,18 +1,18 @@
 import datetime
 
-from flask_restx import Api, Resource, reqparse, Namespace
+from flask_restplus import Api, Resource, reqparse, Namespace
 from classes import servers
 from classes.shared import db
 
 api = Namespace('server', description='Server Related Queries and Functions')
 
 serverAdd = reqparse.RequestParser()
-serverAdd.add_argument('address', type=str, required=True, location=['args', 'form'])
-serverAdd.add_argument('protocol', type=str, required=True, location=['args', 'form'])
+serverAdd.add_argument('address', type=str, required=True)
+serverAdd.add_argument('protocol', type=str, required=True)
 
 serverDelete = reqparse.RequestParser()
-serverDelete.add_argument('id', type=str, required=True, location=['args', 'form'])
-serverDelete.add_argument('token', type=str, required=True, location=['args', 'form'])
+serverDelete.add_argument('id', type=str, required=True)
+serverDelete.add_argument('token', type=str, required=True)
 
 @api.route('/')
 class api_server_root(Resource):
