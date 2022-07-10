@@ -1,6 +1,6 @@
 import datetime
 
-from flask_restplus import Api, Resource, reqparse, Namespace
+from flask_restx import Api, Resource, reqparse, Namespace
 from classes import servers
 from classes.shared import db
 
