@@ -81,6 +81,33 @@ app.register_blueprint(api_v1)
 def shutdown_session(exception=None):
     db.session.remove()
 
+# Initialize Flask-Caching
+app.logger.info({"level": "info", "message": "Performing Flask Caching Initialization"})
+
+from classes.shared import cache
+
+redisHost = os.getenv('OSP_HUB_REDISHOST')
+redisPort = os.getenv('OSP_HUB_REDISPORT')
+
+if redisHost is not None and redisPort is not None:
+    app.logger.info({"level": "info", "message": "Initializing Flask-Caching with Redis Backend"})
+    redisCacheOptions = {
+        "CACHE_TYPE": "RedisCache",
+        "CACHE_KEY_PREFIX": "OSP_HUB_FC",
+        "CACHE_REDIS_HOST": redisHost,
+        "CACHE_REDIS_PORT": redisPort,
+    }
+    if os.getenv('OSP_HUB_REDISPASSWORD') != "" and os.getenv('OSP_HUB_REDISPASSWORD') is not None:
+        redisCacheOptions["CACHE_REDIS_PASSWORD"] = os.getenv('OSP_HUB_REDISPASSWORD')
+    cache.init_app(app, config=redisCacheOptions)
+
+else:
+    app.logger.error({"level": "error", "message": "Flask-Caching Redis Configuration Missing.  Initializing as NullCache"})
+    cacheOptions = {
+        "CACHE_TYPE": "NullCache"
+    }
+    cache.init_app(app, config=cacheOptions)
+
 # Generate Initial API Key
 try:
     apiKeyQuery = secrets.apikey.query.first()
