@@ -16,7 +16,6 @@ if debug is None:
 
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
-from flask_migrate import Migrate, upgrade, init, migrate
 
 # Modal Imports
 from classes import servers
