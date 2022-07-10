@@ -16,6 +16,7 @@ if debug is None:
 
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
+from flask_migrate import Migrate
 
 # Modal Imports
 from classes import servers
@@ -40,7 +41,7 @@ from classes.shared import db
 db.init_app(app)
 db.app = app
 
-db.create_all()
+migrate = Migrate(app, db)
 
 # Import Blueprints
 from blueprints.pages import root_bp
@@ -56,12 +57,15 @@ def shutdown_session(exception=None):
     db.session.remove()
 
 # Generate Initial API Key
-apiKeyQuery = secrets.apikey.query.first()
-if apiKeyQuery is None:
-    newApiKey = secrets.apikey()
-    db.session.add(newApiKey)
-    print('Initial OSP Hub API Key: ' + newApiKey.apikey)
-db.session.commit()
+try:
+    apiKeyQuery = secrets.apikey.query.first()
+    if apiKeyQuery is None:
+        newApiKey = secrets.apikey()
+        db.session.add(newApiKey)
+        print('Initial OSP Hub API Key: ' + newApiKey.apikey)
+    db.session.commit()
+except:
+    print("No DB Schema Exists")
 
 if __name__ == "__main__":
     app.run('0.0.0.0', port=5000, debug=debug)
