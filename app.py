@@ -3,7 +3,7 @@
 #from gevent import monkey
 #monkey.patch_all(thread=True)
 
-import os
+import os, logging
 from dotenv import load_dotenv
 
 # Load Environment Variables
@@ -17,6 +17,7 @@ if debug is None:
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
 from flask_migrate import Migrate
+from sqlalchemy import exc
 
 # Modal Imports
 from classes import servers
@@ -33,8 +34,26 @@ if dbLocation[:6] != "sqlite":
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 600
     app.config['MYSQL_DATABASE_CHARSET'] = "utf8"
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf8', 'pool_use_lifo': 'False', 'pool_size': 10, "pool_pre_ping": True}
-else:
-    pass
+
+# ----------------------------------------------------------------------------#
+# Set Logging Configuration
+# ----------------------------------------------------------------------------#
+if __name__ != "__main__":
+    loglevel = logging.WARNING
+    configLogLevel = os.getenv('OSP_HUB_LOGLEVEL')
+    if configLogLevel != None:
+        logOptions = {
+            "debug": logging.DEBUG,
+            "info": logging.INFO,
+            "warning": logging.WARNING,
+            "error": logging.ERROR,
+            "critical": logging.CRITICAL,
+        }
+        if configLogLevel.lower() in logOptions:
+            loglevel = logOptions[configLogLevel.lower()]
+    gunicorn_logger = logging.getLogger("gunicorn.error")
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(loglevel)
 
 # Begin Database Initialization
 from classes.shared import db
@@ -42,6 +61,12 @@ db.init_app(app)
 db.app = app
 
 migrate = Migrate(app, db)
+
+# Handle Session Rollback Issues
+@app.errorhandler(exc.SQLAlchemyError)
+def handle_db_exceptions(error):
+    app.logger.error(error)
+    db.session.rollback()
 
 # Import Blueprints
 from blueprints.pages import root_bp
