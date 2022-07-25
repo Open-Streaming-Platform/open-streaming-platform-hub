@@ -16,6 +16,7 @@ if debug is None:
 
 # Import 3rd Party Libraries
 from flask import Flask, redirect, request, abort, flash, current_app, session
+from flask.wrappers import Request
 from flask_migrate import Migrate
 from sqlalchemy import exc
 
@@ -34,6 +35,16 @@ if dbLocation[:6] != "sqlite":
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 600
     app.config['MYSQL_DATABASE_CHARSET'] = "utf8"
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf8', 'pool_use_lifo': 'False', 'pool_size': 10, "pool_pre_ping": True}
+
+# ----------------------------------------------------------------------------#
+# Monkey Fix Flask-Restx issue (https://github.com/pallets/flask/issues/4552#issuecomment-1109785314)
+# ----------------------------------------------------------------------------#
+class AnyJsonRequest(Request):
+    def on_json_loading_failed(self, e):
+        if e is not None:
+            return super().on_json_loading_failed(e)
+
+app.request_class = AnyJsonRequest
 
 # ----------------------------------------------------------------------------#
 # Set Logging Configuration
