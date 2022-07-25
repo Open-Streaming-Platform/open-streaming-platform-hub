@@ -11,6 +11,7 @@ class server(db.Model):
     serverAddress = db.Column(db.String(255), unique=True)
     serverProtocol = db.Column(db.String(5))
     serverActive = db.Column(db.Boolean)
+    serverConfirmed = db.Column(db.Boolean)
     serverLastUpdate = db.Column(db.DateTime)
     serverName = db.Column(db.String(255))
     serverToken = db.Column(db.String(512), unique=True)
@@ -21,6 +22,7 @@ class server(db.Model):
         self.serverAddress = serverAddress
         self.serverProtocol = serverProtocol
         self.serverActive = True
+        self.serverConfirmed = False
         self.serverToken = secrets.token_hex(32)
         self.serverLastUpdate = datetime.datetime.now()
 
