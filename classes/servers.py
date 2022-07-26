@@ -37,6 +37,7 @@ class server(db.Model):
             'serverAddress': self.serverAddress,
             'serverProtocol': self.serverProtocol,
             'serverActive': self.serverActive,
+            'serverConfirmed': self.serverConfirmed,
             'serverLastUpdate': str(self.serverLastUpdate),
             'serverName': self.serverName
         }
