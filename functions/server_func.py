@@ -1,8 +1,8 @@
-import requests
+import requests, logging
 from classes import servers
 from classes.shared import db
 
-
+log = logging.getLogger("app.functions.server_func")
 
 def getServerAPI(serverId, endpoint):
     results = None
@@ -49,10 +49,11 @@ def updateServerTopics(serverId):
             topicQuery = serverTopicQueryBuild.filter_by(topicId=topic['id']).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
+                log.debug('Updating Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
             else:
                 newTopic = servers.topic(serverId, topic['id'], topic['name'])
                 db.session.add(newTopic)
-            db.session.commit()
+                log.debug('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
         nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
             db.session.delete(item)
