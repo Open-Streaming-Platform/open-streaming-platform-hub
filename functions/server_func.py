@@ -42,11 +42,12 @@ def updateServer(serverId):
 def updateServerTopics(serverId):
     topics = getServerAPI(serverId, 'topic/')
     if topics is not None:
-        serverTopicQuery = servers.topic.query.filter_by(serverId=serverId).all()
+        serverTopicQueryBuild = servers.topic.query.filter_by(serverId=serverId)
+        serverTopicQuery = serverTopicQueryBuild.all()
         apiTopicIds = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
-            topicQuery = serverTopicQuery.filter_by(topicId=topic['id']).first()
+            topicQuery = serverTopicQueryBuild.filter_by(topicId=topic['id']).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
             else:
