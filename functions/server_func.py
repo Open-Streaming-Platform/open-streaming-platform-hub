@@ -36,7 +36,9 @@ def verifyServer(serverId):
     return return_confirmation
 
 def updateServer(serverId):
+    log.info("Updating Topics for ServerId:" + str(serverId) )
     updateServerTopics(serverId)
+    log.info("Updating Live Streams for ServerId:" + str(serverId) )
     updateServerLiveStreams(serverId)
 
 def updateServerTopics(serverId):
@@ -49,11 +51,11 @@ def updateServerTopics(serverId):
             topicQuery = serverTopicQueryBuild.filter_by(topicId=topic['id']).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
-                log.debug('Updating Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
+                log.info('Updating Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
             else:
                 newTopic = servers.topic(serverId, topic['id'], topic['name'])
                 db.session.add(newTopic)
-                log.debug('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
+                log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
         nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
             db.session.delete(item)
@@ -63,3 +65,7 @@ def updateServerTopics(serverId):
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
+
+def debugTopics(serverId):
+    topics = getServerAPI(serverId, 'topic/')
+    return topics
