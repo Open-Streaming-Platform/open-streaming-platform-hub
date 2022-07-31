@@ -17,7 +17,12 @@ def servers_confirm_debug(id):
 @debug_bp.route('/servers/<id>/refresh')
 def server_refresh_debug(id):
     server_func.updateServer(id)
-    return True
+    return str(True)
+
+@debug_bp.route('/topics')
+def topic_query_debug():
+    topicQuery = servers.topic.query.all()
+    return str(topicQuery)
 
 @debug_bp.route('/channels')
 def channels_debug():
