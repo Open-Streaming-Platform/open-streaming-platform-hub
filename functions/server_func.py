@@ -52,10 +52,9 @@ def updateServerTopics(serverId):
             else:
                 newTopic = servers.topic(serverId, topic['id'], topic['name'])
                 db.session.add(newTopic)
-                print('Add')
-        nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
-        for item in nonMatchingTopics:
-            db.session.delete(item)
+        #nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
+        #for item in nonMatchingTopics:
+        #    db.session.delete(item)
         db.session.commit()
         db.session.close()
     
