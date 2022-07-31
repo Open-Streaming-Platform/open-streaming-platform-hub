@@ -16,6 +16,7 @@ class server(db.Model):
     serverName = db.Column(db.String(255))
     serverToken = db.Column(db.String(512), unique=True)
     channels = db.relationship('channel', backref='server', cascade="all, delete-orphan", lazy="joined")
+    topics = db.relationship('topic', backref='server', cascade="all, delete-orphan", lazy="joined")
 
     def __init__(self, serverAddress, serverProtocol):
         self.serverId = str(uuid.uuid4())
@@ -41,3 +42,39 @@ class server(db.Model):
             'serverLastUpdate': str(self.serverLastUpdate),
             'serverName': self.serverName
         }
+
+class topic(db.Model):
+    __tablename__ = "topic"
+    id = db.Column(db.Integer, primary_key=True)
+    serverId = db.Column(db.Integer, db.ForeignKey('server.id'))
+    topicId = db.Column(db.Integer)
+    name = db.Column(db.String(255))
+    
+    def __init__(self, serverId, topicId, name):
+        self.serverId = serverId
+        self.topicId = topicId
+        self.name = name
+
+
+class stream(db.Model):
+    __tablename__ = "stream"
+    id = db.Column(db.Integer, primary_key=True)
+    serverId = db.Column(db.String(255))
+    serverChannelLoc = db.Column(db.String(255))
+    streamerId = db.Column(db.Integer)
+    streamPage = db.Column(db.String(255))
+    streamName = db.Column(db.String(1024))
+    thumbnail = db.Column(db.String(1024))
+    gifThumbnail = db.Column(db.String(1024))
+    topic = db.Column(db.Integer)
+    
+    def __init__(self, serverId, channelLoc, streamerId, streamPage, streamName, thumbnail, gifThumbnail, topics):
+        self.serverId = serverId
+        self.serverChannelLoc = channelLoc
+        self.streamerId = streamerId
+        self.streamPage = streamPage
+        self.streamName = streamName
+        self.thumbnail = thumbnail
+        self.gifThumbnail = gifThumbnail
+        self.topic = topics
+        

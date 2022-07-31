@@ -14,6 +14,11 @@ def servers_confirm_debug(id):
     results = server_func.verifyServer(id)
     return {'results': results}
 
+@debug_bp.route('/servers/<id>/refresh')
+def server_refresh_debug(id):
+    server_func.updateServer(id)
+    return True
+
 @debug_bp.route('/channels')
 def channels_debug():
     channelQuery = channels.channel.query.all()
