@@ -44,19 +44,18 @@ def updateServer(serverId):
 def updateServerTopics(serverId):
     topics = getServerAPI(serverId, 'topic/')
     if topics is not None:
-        serverTopicQueryBuild = servers.topic.query.filter_by(serverId=serverId)
         apiTopicIds = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
-            topicQuery = serverTopicQueryBuild.filter_by(topicId=topic['id']).first()
+            topicQuery = servers.topic.query.filter_by(serverId=int(serverId), topicId=topic['id']).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
                 log.info('Updating Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
             else:
-                newTopic = servers.topic(serverId, topic['id'], topic['name'])
+                newTopic = servers.topic(int(serverId), topic['id'], topic['name'])
                 db.session.add(newTopic)
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
-        nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
+        nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
             db.session.delete(item)
         db.session.commit()
