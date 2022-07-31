@@ -45,7 +45,7 @@ def updateServerTopics(serverId):
         serverTopicQuery = servers.topic.query.filter_by(serverId=serverId).all()
         apiTopicIds = []
         for topic in topics:
-            apiTopicIds.append(topic.id)
+            apiTopicIds.append(topic['id'])
             topicQuery = serverTopicQuery.filter_by(topicId=topic['id']).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
