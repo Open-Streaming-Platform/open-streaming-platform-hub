@@ -43,7 +43,6 @@ def updateServerTopics(serverId):
     topics = getServerAPI(serverId, 'topic/')
     if topics is not None:
         serverTopicQueryBuild = servers.topic.query.filter_by(serverId=serverId)
-        serverTopicQuery = serverTopicQueryBuild.all()
         apiTopicIds = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
@@ -53,6 +52,7 @@ def updateServerTopics(serverId):
             else:
                 newTopic = servers.topic(serverId, topic['id'], topic['name'])
                 db.session.add(newTopic)
+                print('Add')
         nonMatchingTopics = serverTopicQueryBuild.filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
             db.session.delete(item)
