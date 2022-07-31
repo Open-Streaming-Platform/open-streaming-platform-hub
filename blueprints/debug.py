@@ -25,7 +25,7 @@ def topic_query_debug():
     return str(topicQuery)
 
 @debug_bp.route('/topics_server/<id>')
-def topic_query_server_debug(id)
+def topic_query_server_debug(id):
     topicQuery = server_func.debugTopics(id)
     return str(topicQuery)
 
