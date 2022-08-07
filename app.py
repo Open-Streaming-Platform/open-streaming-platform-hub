@@ -15,10 +15,25 @@ if debug is None:
     debug = False
 
 # Import 3rd Party Libraries
+import sentry_sdk
 from flask import Flask, redirect, request, abort, flash, current_app, session
+from sentry_sdk.integrations.flask import FlaskIntegration
 from flask.wrappers import Request
 from flask_migrate import Migrate
 from sqlalchemy import exc
+
+# Sentry IO Config
+sentry_sdk.init(
+    dsn="https://60cdb6007a834f9cb0929c55a4f1bc6a@o996412.ingest.sentry.io/6630137",
+    integrations=[
+        FlaskIntegration(),
+    ],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0
+)
 
 # Modal Imports
 from classes import servers
