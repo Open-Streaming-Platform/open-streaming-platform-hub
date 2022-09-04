@@ -75,4 +75,4 @@ def updateServerLiveStreams(serverId):
 def debugTopics(serverId):
     parsedTopics = updateServerTopics(serverId)
     topics = servers.topic.query.filter_by(serverId=int(serverId)).all()
-    return parsedTopics
+    return topics
