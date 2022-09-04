@@ -56,6 +56,7 @@ def updateServerTopics(serverId):
                 newTopic = servers.topic(int(serverId), topic['id'], topic['name'])
                 db.session.add(newTopic)
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
+            db.session.commit()
         nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
             log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
