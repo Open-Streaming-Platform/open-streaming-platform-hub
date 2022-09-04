@@ -46,7 +46,6 @@ def updateServerTopics(serverId):
     apiTopicIds = None
     if topics is not None:
         apiTopicIds = []
-        finalizedObj = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
             topicQuery = servers.topic.query.filter_by(serverId=int(serverId), topicId=topic['id']).first()
@@ -56,7 +55,6 @@ def updateServerTopics(serverId):
             else:
                 newTopic = servers.topic(int(serverId), topic['id'], topic['name'])
                 db.session.add(newTopic)
-                finalizedObj.append(newTopic)
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
             db.session.commit()
         #nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
@@ -65,7 +63,7 @@ def updateServerTopics(serverId):
         #    db.session.delete(item)
         db.session.commit()
         db.session.close()
-    return finalizedObj
+    return topics
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
