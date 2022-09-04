@@ -65,7 +65,7 @@ app.request_class = AnyJsonRequest
 # Set Logging Configuration
 # ----------------------------------------------------------------------------#
 if __name__ != "__main__":
-    loglevel = logging.WARNING
+    loglevel = logging.INFO
     configLogLevel = os.getenv('OSP_HUB_LOGLEVEL')
     if configLogLevel != None:
         logOptions = {
