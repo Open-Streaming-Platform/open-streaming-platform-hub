@@ -68,5 +68,5 @@ def updateServerLiveStreams(serverId):
 
 def debugTopics(serverId):
     updateServerTopics(serverId)
-    topics = servers.topic.query.filter_by(serverId=int(serverId))
+    topics = servers.topic.query.filter_by(serverId=int(serverId)).all()
     return topics
