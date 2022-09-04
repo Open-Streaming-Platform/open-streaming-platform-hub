@@ -8,7 +8,7 @@ def getServerAPI(serverId, endpoint):
     results = None
     server_query = servers.server.query.filter_by(id=serverId).first()
     if server_query is not None:
-        r=requests.get(server_query.get_Url() + '/apiv1/' + endpoint)
+        r = requests.get(server_query.get_Url() + '/apiv1/' + endpoint)
         if r.status_code == 200:
             results = r.json()['results']
             server_query.serverActive = True
@@ -57,6 +57,7 @@ def updateServerTopics(serverId):
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
         nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
         for item in nonMatchingTopics:
+            log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
             db.session.delete(item)
         db.session.commit()
         db.session.close()
@@ -66,5 +67,6 @@ def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
 
 def debugTopics(serverId):
-    topics = getServerAPI(serverId, 'topic/')
+    updateServerTopics(serverId)
+    topics = servers.topic.query.filter_by(serverId=int(serverId))
     return topics

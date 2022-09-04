@@ -79,3 +79,25 @@ class api_server_root(Resource):
             db.session.commit()
             return {'results': {'success': True, 'message': 'Info: Server Removed', 'id': str(serverUUID)}}, 200
         return {'results': {'success': False, 'message': 'Error: Missing Required Arguments'}}, 400
+
+@api.route('/stream')
+class api_server_stream(Resource):
+    @api.expect(serverStreamAdd)
+    @api.doc(security="serverToken")
+    @api.doc(params={'streamId': 'streamId of New Stream'})
+    @api.doc(responses={200: 'Success', 400: 'Request Error'})
+    def post(self):
+        """
+        Adds a new Server Stream
+        """
+
+        args = serverStreamAdd.parse_args()
+
+        if "X-SERVER-TOKEN" in request.headers:
+            serverQuery = servers.server.query.filter_by(
+                serverToken=request.headers["X-SERVER-TOKEN"]
+            ).first()
+            if serverQuery is not None:
+                streamData = functions.server_func.getServerAPI(serverQuery.id, '/stream/' + str(args['streamId']))
+
+        return {"results": {"message": "Request Error"}}, 400

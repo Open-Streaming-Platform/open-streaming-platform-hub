@@ -19,9 +19,13 @@ authorizations = {
         'type': 'apiKey',
         'in': 'header',
         'name': 'X-API-KEY'
+    },
+    'serverToken': {
+        'type': 'apiKey',
+        'in': 'header',
+        'name': 'X-SERVER-TOKEN'
     }
 }
-
 api_v1 = Blueprint('api', __name__, url_prefix='/api')
 api = fixedAPI(api_v1, version='1.0', title='OSP Hub API', description='OSP Hub API', default='Primary', default_label='OSP Hub Primary Endpoints', authorizations=authorizations)
 
