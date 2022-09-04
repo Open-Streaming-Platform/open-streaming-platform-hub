@@ -43,6 +43,7 @@ def updateServer(serverId):
 
 def updateServerTopics(serverId):
     topics = getServerAPI(serverId, 'topic/')
+    apiTopicIds = None
     if topics is not None:
         apiTopicIds = []
         for topic in topics:
@@ -61,12 +62,12 @@ def updateServerTopics(serverId):
             db.session.delete(item)
         db.session.commit()
         db.session.close()
-    
+    return apiTopicIds
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
 
 def debugTopics(serverId):
-    updateServerTopics(serverId)
+    parsedTopics = updateServerTopics(serverId)
     topics = servers.topic.query.filter_by(serverId=int(serverId)).all()
-    return topics
+    return parsedTopics
