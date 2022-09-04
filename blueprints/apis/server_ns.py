@@ -14,6 +14,9 @@ serverDelete = reqparse.RequestParser()
 serverDelete.add_argument('id', type=str, required=True)
 serverDelete.add_argument('token', type=str, required=True)
 
+serverStreamAdd = reqparse.RequestParser()
+serverAdd.add_argument('streamId', type=str, required=True)
+
 @api.route('/')
 class api_server_root(Resource):
     def get(self):
