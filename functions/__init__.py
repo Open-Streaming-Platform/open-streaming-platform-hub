@@ -1,1 +1,1 @@
-import server_func
+from . import server_func
