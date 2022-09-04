@@ -46,6 +46,7 @@ def updateServerTopics(serverId):
     apiTopicIds = None
     if topics is not None:
         apiTopicIds = []
+        finalizedObj = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
             topicQuery = servers.topic.query.filter_by(serverId=int(serverId), topicId=topic['id']).first()
@@ -55,15 +56,16 @@ def updateServerTopics(serverId):
             else:
                 newTopic = servers.topic(int(serverId), topic['id'], topic['name'])
                 db.session.add(newTopic)
+                finalizedObj.append(newTopic)
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
             db.session.commit()
-        nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
-        for item in nonMatchingTopics:
-            log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
-            db.session.delete(item)
+        #nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
+        #for item in nonMatchingTopics:
+        #    log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
+        #    db.session.delete(item)
         db.session.commit()
         db.session.close()
-    return apiTopicIds
+    return finalizedObj
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
