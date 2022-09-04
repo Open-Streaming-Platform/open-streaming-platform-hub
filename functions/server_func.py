@@ -44,26 +44,30 @@ def updateServer(serverId):
 def updateServerTopics(serverId):
     topics = getServerAPI(serverId, 'topic/')
     apiTopicIds = None
+    parsed = {'new': [], 'updated': [], 'deleted': []}
     if topics is not None:
         apiTopicIds = []
         for topic in topics:
             apiTopicIds.append(topic['id'])
-            topicQuery = servers.topic.query.filter_by(serverId=int(serverId), topicId=topic['id']).first()
+            topicQuery = servers.topic.query.filter_by(serverId=int(serverId), topicId=int(topic['id'])).first()
             if topicQuery is not None:
                 topicQuery.name = topic['name']
                 log.info('Updating Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
+                parsed['updated'].append(topic['id'])
             else:
                 newTopic = servers.topic(int(serverId), topic['id'], topic['name'])
                 db.session.add(newTopic)
                 log.info('Adding New Topic - ' + str(serverId) + ":" + " " + str(topic['id']) + "/" + topic['name'])
+                parsed['new'].append(topic['id'])
             db.session.commit()
-        #nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
-        #for item in nonMatchingTopics:
-        #    log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
-        #    db.session.delete(item)
+        nonMatchingTopics = servers.topic.query.filter_by(serverId=int(serverId)).filter(~servers.topic.id.in_(apiTopicIds)).all()
+        for item in nonMatchingTopics:
+            log.info('Removing Non-Matching Topic - ' + str(serverId) + ":" + " " + str(item.id) + "/" + item.name)
+            parsed['deleted'].append(item.id)
+            db.session.delete(item)
         db.session.commit()
         db.session.close()
-    return topics
+    return parsed
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')
