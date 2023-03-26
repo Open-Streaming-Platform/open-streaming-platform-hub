@@ -112,8 +112,8 @@ app.logger.info({"level": "info", "message": "Performing Flask Caching Initializ
 
 from classes.shared import cache
 
-redisHost = os.getenv('OSP_HUB_REDISHOST')
-redisPort = os.getenv('OSP_HUB_REDISPORT')
+redisHost = os.getenv('OSP_REDIS_HOST')
+redisPort = os.getenv('OSP_REDIS_PORT')
 
 if redisHost is not None and redisPort is not None:
     app.logger.info({"level": "info", "message": "Initializing Flask-Caching with Redis Backend"})
@@ -123,8 +123,8 @@ if redisHost is not None and redisPort is not None:
         "CACHE_REDIS_HOST": redisHost,
         "CACHE_REDIS_PORT": redisPort,
     }
-    if os.getenv('OSP_HUB_REDISPASSWORD') != "" and os.getenv('OSP_HUB_REDISPASSWORD') is not None:
-        redisCacheOptions["CACHE_REDIS_PASSWORD"] = os.getenv('OSP_HUB_REDISPASSWORD')
+    if os.getenv('OSP_REDIS_PASSWORD') != "" and os.getenv('OSP_REDIS_PASSWORD') is not None:
+        redisCacheOptions["CACHE_REDIS_PASSWORD"] = os.getenv('OSP_REDIS_PASSWORD')
     cache.init_app(app, config=redisCacheOptions)
 
 else:
@@ -133,6 +133,14 @@ else:
         "CACHE_TYPE": "NullCache"
     }
     cache.init_app(app, config=cacheOptions)
+
+# Initialize Celery
+app.logger.info({"level": "info", "message": "Initializing Celery"})
+from classes.shared import celery
+
+celery.conf.broker_url = app.config["broker_url"]
+celery.conf.result_backend = app.config["result_backend"]
+celery.conf.update(app.config)
 
 # Generate Initial API Key
 try:
