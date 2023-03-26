@@ -4,6 +4,20 @@ FROM ubuntu:22.04
 # Setting the working directory to /app
 WORKDIR /app
 
+# Get initial dependancies
+RUN apt update
+RUN apt install -y wget build-essential libpcre3 libpcre3-dev libssl-dev unzip libpq-dev curl git
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get -y install tzdata
+
+ENV TZ=$DEFAULT_TZ
+
+RUN apt install -y bash
+
+# Install Python, Gunicorn, and uWSGI
+RUN apt install -y python3 python3-pip uwsgi-plugin-python3 python3-dev python3-setuptools
+
 # Install Python Dependencies
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
