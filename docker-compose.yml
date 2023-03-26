@@ -1,0 +1,57 @@
+version: '2.4'
+
+networks:
+  osphub:
+    external: false
+  web:
+    external: true
+services:
+  osphub_db:
+    image: mariadb
+    restart: unless-stopped
+    mem_limit: 256m
+    memswap_limit: 512m
+    mem_reservation: 256m
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - /srv/docker/osphub-mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=REPLACEOSPROOTDBPASSWORD
+      - MYSQL_PASSWORD=REPLACEOSPDBPASSWORD
+      - MYSQL_DATABASE=osp
+      - MYSQL_USER=osp
+    networks:
+      - osphub
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=$$MYSQL_ROOT_PASSWORD --execute \"SHOW DATABASES;\""
+      interval: 1m
+      timeout: 1s
+      retries: 5
+      start_period: 30s
+  
+  osp_hub:
+    build: .
+    restart: unless-stopped
+
+    mem_limit: 2048m
+    memswap_limit: 2304m
+    mem_reservation: 2048m
+
+    labels:
+      - "traefik.enable=true"
+    #  - "traefik.http.routers.streamingapp.entrypoints=websecure"
+      - "traefik.http.routers.osphub.rule=Host(`osphub.internal.divby0.net`)"
+    #  - "traefik.http.routers.streamingapp.tls.domains[0].main=osp.example.com"
+    #  - "traefik.http.routers.streamingapp.tls.certresolver=le"
+    #  - "traefik.http.services.streamingapp.loadBalancer.sticky.cookie.name=server_id"
+    #  - "traefik.http.services.streamingapp.loadBalancer.sticky.cookie.httpOnly=true"
+    ports:
+      - '80'
+    environment:
+      - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      # - TZ=ETC/UTC
+    networks:
+      - osphub
+      - web
+    depends_on:
+      - osphub_db
