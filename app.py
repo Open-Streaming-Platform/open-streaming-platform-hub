@@ -7,20 +7,43 @@ import os, logging
 from dotenv import load_dotenv
 
 # Load Environment Variables
+class configObj:
+        pass
+
 load_dotenv()
-dbLocation = os.getenv('OSP_HUB_DB')
-debug = os.getenv('OSP_HUB_DEBUG')
+config = configObj()
+config.dbLocation = os.getenv('OSP_HUB_DB')
+config.debug = os.getenv('OSP_HUB_DEBUG')
+config.redisHost = os.getenv("OSP_REDIS_HOST")
+config.redisPort = os.getenv("OSP_REDIS_PORT")
+config.redisPassword = os.getenv("OSP_REDIS_PASSWORD")
 
 if debug is None:
     debug = False
 
 # Import 3rd Party Libraries
 import sentry_sdk
+import redis
 from flask import Flask, redirect, request, abort, flash, current_app, session
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask.wrappers import Request
 from flask_migrate import Migrate
 from sqlalchemy import exc
+
+# Initialize RedisURL Variable
+RedisURL = None
+if config.redisPassword == "" or config.redisPassword is None:
+    RedisURL = "redis://" + config.redisHost + ":" + str(config.redisPort)
+else:
+    RedisURL = (
+        "redis://:"
+        + config.redisPassword
+        + "@"
+        + config.redisHost
+        + ":"
+        + str(config.redisPort)
+    )
+
 
 # Sentry IO Config
 sentry_sdk.init(
@@ -42,9 +65,11 @@ from classes import secrets
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = dbLocation
+app.config["broker_url"] = RedisURL
+app.config["result_backend"] = RedisURL
+app.config['SQLALCHEMY_DATABASE_URI'] = config.dbLocation
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-if dbLocation[:6] != "sqlite":
+if config.dbLocation[:6] != "sqlite":
     app.config['SQLALCHEMY_MAX_OVERFLOW'] = -1
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 300
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 600
@@ -106,6 +131,18 @@ app.register_blueprint(api_v1)
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db.session.remove()
+
+# Initialize Redis
+app.logger.info({"level": "info", "message": "Initializing Redis"})
+if config.redisPassword == "" or config.redisPassword is None:
+    r = redis.Redis(host=config.redisHost, port=config.redisPort)
+    app.config["SESSION_REDIS"] = r
+else:
+    r = redis.Redis(
+        host=config.redisHost, port=config.redisPort, password=config.redisPassword
+    )
+    app.config["SESSION_REDIS"] = r
+r.flushdb()
 
 # Initialize Flask-Caching
 app.logger.info({"level": "info", "message": "Performing Flask Caching Initialization"})
