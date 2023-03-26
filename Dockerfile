@@ -1,5 +1,5 @@
 # Using official ubuntu image as a parent image
-FROM python:3.9-bullseye
+FROM ubuntu:22.04
 
 # Setting the working directory to /app
 WORKDIR /app
