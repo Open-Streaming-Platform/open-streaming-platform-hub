@@ -23,6 +23,10 @@ if config.debug is None:
 
 # Import 3rd Party Libraries
 import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 import redis
 from flask import Flask, redirect, request, abort, flash, current_app, session
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -50,6 +54,9 @@ sentry_sdk.init(
     dsn="https://60cdb6007a834f9cb0929c55a4f1bc6a@o996412.ingest.sentry.io/6630137",
     integrations=[
         FlaskIntegration(),
+        SqlalchemyIntegration(),
+        CeleryIntegration(),
+        RedisIntegration(),
     ],
 
     # Set traces_sample_rate to 1.0 to capture 100%
