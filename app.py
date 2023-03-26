@@ -18,7 +18,7 @@ config.redisHost = os.getenv("OSP_REDIS_HOST")
 config.redisPort = os.getenv("OSP_REDIS_PORT")
 config.redisPassword = os.getenv("OSP_REDIS_PASSWORD")
 
-if debug is None:
+if config.debug is None:
     debug = False
 
 # Import 3rd Party Libraries
