@@ -1,4 +1,5 @@
 from flask import Blueprint, request, url_for, render_template, redirect, flash
+import json
 from classes import servers, channels
 from functions import server_func
 
@@ -18,6 +19,11 @@ def servers_confirm_debug(id):
 def server_refresh_debug(id):
     server_func.updateServer(id)
     return str(True)
+
+@debug_bp.route('/servers/<id>/get')
+def server_get_debug(id):
+    val = server_func.getServerLiveChannels(id)
+    return json.dumps(val, indent=4)
 
 @debug_bp.route('/topics')
 def topic_query_debug():

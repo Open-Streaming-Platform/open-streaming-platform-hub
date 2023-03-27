@@ -8,11 +8,14 @@ def getServerAPI(serverId, endpoint):
     results = None
     server_query = servers.server.query.filter_by(id=serverId).first()
     if server_query is not None:
-        r = requests.get(server_query.get_Url() + '/apiv1/' + endpoint)
-        if r.status_code == 200:
-            results = r.json()['results']
-            server_query.serverActive = True
-        else:
+        try:
+            r = requests.get(server_query.get_Url() + '/apiv1/' + endpoint, timeout=60)
+            if r.status_code == 200:
+                results = r.json()['results']
+                server_query.serverActive = True
+            else:
+                server_query.serverActive = False
+        except:
             server_query.serverActive = False
     db.session.commit()
     db.session.close()
@@ -37,7 +40,7 @@ def verifyServer(serverId):
 
 def checkServerOnline(serverId):
     results = False
-    serverSettings = getServerAPI(serverId, 'server/')
+    serverSettings = getServerAPI(serverId, 'server/ping')
     if serverSettings is not None:
         servers.server.query.filter_by(id=serverId).update(dict(serverLastUpdate=datetime.datetime.now()))
         db.session.commit()
@@ -45,6 +48,10 @@ def checkServerOnline(serverId):
         results = True
     return results
 
+def getServerLiveChannels(serverId):
+    serverSettings = getServerAPI(serverId, 'channel/activeChannels')
+    return serverSettings
+    
 
 def updateServer(serverId):
     log.info("Updating Topics for ServerId:" + str(serverId) )
