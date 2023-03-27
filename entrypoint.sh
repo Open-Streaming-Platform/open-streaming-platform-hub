@@ -12,5 +12,6 @@ echo "Starting OSP-$OSP_CORE_TYPE"
 case "$OSP_CORE_TYPE" in
  celery) supervisord --nodaemon --configuration /app/docker-files.d/supervisord-celery.conf ;;
  beat) supervisord --nodaemon --configuration /app/docker-files.d/supervisord-celery-beat.conf ;;
+ flower) supervisord --nodaemon --configuration /app/docker-files.d/supervisord-celery-flower.conf ;;
     *) supervisord --nodaemon --configuration /app/docker-files.d/supervisord.conf ;;
 esac

@@ -49,7 +49,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.osphubapi.rule: Host(`hubapi.internal.divby0.net`)
-      traefik.port: 5000
+      traefik.port: 5000555
     environment:
       - OSP_CORE_TYPE=hub
       - OSP_REDIS_HOST=osphub_redis
@@ -96,6 +96,28 @@ services:
       - 5000/tcp
     environment:
       - OSP_CORE_TYPE=beat
+      - OSP_REDIS_HOST=osphub_redis
+      - OSP_REDIS_PORT=6379
+      - OSP_REDIS_PASSWORD=
+      - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      # - TZ=ETC/UTC
+    networks:
+      - osphub
+      - web
+    depends_on:
+      - osphub_db
+      - osphub_redis
+
+  osp_hub_celery_flower:
+    image: deamos/osp-hub-api:latest
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 2304m
+    mem_reservation: 512m
+    ports:
+      - 51012:5555/tcp
+    environment:
+      - OSP_CORE_TYPE=flower
       - OSP_REDIS_HOST=osphub_redis
       - OSP_REDIS_PORT=6379
       - OSP_REDIS_PASSWORD=
