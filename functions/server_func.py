@@ -1,4 +1,4 @@
-import requests, logging
+import requests, logging, datetime
 from classes import servers
 from classes.shared import db
 
@@ -34,6 +34,17 @@ def verifyServer(serverId):
     db.session.commit()
     db.session.close()
     return return_confirmation
+
+def checkServerOnline(serverId):
+    results = False
+    serverSettings = getServerAPI(serverId, 'server/')
+    if serverSettings is not None:
+        servers.server.query.filter_by(id=serverId).update(dict(serverLastUpdate=datetime.datetime.now()))
+        db.session.commit()
+        db.session.close()
+        results = True
+    return results
+
 
 def updateServer(serverId):
     log.info("Updating Topics for ServerId:" + str(serverId) )
