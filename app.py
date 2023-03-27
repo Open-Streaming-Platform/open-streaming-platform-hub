@@ -186,6 +186,19 @@ celery.conf.broker_url = app.config["broker_url"]
 celery.conf.result_backend = app.config["result_backend"]
 celery.conf.update(app.config)
 
+class ContextTask(celery.Task):
+    """Make celery tasks work with Flask app context"""
+
+    def __call__(self, *args, **kwargs):
+        with app.app_context():
+            return self.run(*args, **kwargs)
+
+
+celery.Task = ContextTask
+
+# Import Celery Beat Scheduled Tasks
+from functions.celery import scheduler
+
 # Generate Initial API Key
 try:
     apiKeyQuery = secrets.apikey.query.first()
