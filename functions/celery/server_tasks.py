@@ -21,7 +21,7 @@ def setup_server_tasks(sender, **kwargs):
 def verify_servers(self):
     serverQuery = servers.server.query.filter_by(serverConfirmed=False).with_entities(servers.server.id).all()
     for server in serverQuery:
-        results = subtask("functions.celery.server_tasks.verify_server", args=(server.id))
+        results = subtask("functions.celery.server_tasks.verify_server", args=(server.id,)).apply_async()
     return True
 
 @celery.task(bind=True)
@@ -33,7 +33,7 @@ def verify_server(self, serverId):
 def check_servers_heartbeat(self):
     serverQuery = servers.server.query.filter_by(serverConfirmed=True).with_entities(servers.server.id).all()
     for server in serverQuery:
-        results = subtask("functions.celery.server_tasks.check_server_heartbeat", args=(server.id))
+        results = subtask("functions.celery.server_tasks.check_server_heartbeat", args=(server.id,)).apply_async()
     return True
 
 @celery.task(bind=True)
