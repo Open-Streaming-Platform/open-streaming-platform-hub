@@ -25,18 +25,18 @@ def verify_servers(self):
     return True
 
 @celery.task(bind=True)
-def verify_server(serverId):
+def verify_server(self, serverId):
     server_func.verifyServer(serverId)
     return True
 
 @celery.task(bind=True)
-def check_servers_heartbeat():
+def check_servers_heartbeat(self):
     serverQuery = servers.server.query.filter_by(serverConfirmed=True).with_entities(servers.server.id).all()
     for server in serverQuery:
         results = subtask("functions.celery.server_tasks.check_server_heartbeat", args=(server.id))
     return True
 
 @celery.task(bind=True)
-def check_server_heartbeat(serverId):
+def check_server_heartbeat(self, serverId):
     server_func.checkServerOnline(serverId)
     return True
