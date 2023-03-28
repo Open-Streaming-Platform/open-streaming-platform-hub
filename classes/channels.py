@@ -75,6 +75,6 @@ class channel(db.Model):
             'channelLocation': self.channelLocation,
             'channelViewers': self.channelViewers,
             'channelLive': self.channelLive,
-            'channelLastUpdated': self.channelLastUpdated,
+            'channelLastUpdated': str(self.channelLastUpdated),
             'channelImage': self.channelImage,
         }
