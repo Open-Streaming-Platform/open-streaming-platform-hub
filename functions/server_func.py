@@ -48,6 +48,10 @@ def checkServerOnline(serverId):
         results = True
     return results
 
+def getServerHubChannels(serverId):
+    serverSettings = getServerAPI(serverId, 'channel/hubChannels')
+    return serverSettings
+
 def getServerLiveChannels(serverId):
     serverSettings = getServerAPI(serverId, 'channel/activeChannels')
     return serverSettings

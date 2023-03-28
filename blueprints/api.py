@@ -2,6 +2,7 @@ from flask import Blueprint, url_for
 from flask_restx import Api, Resource, reqparse
 
 from .apis.server_ns import api as serverNS
+from .apis.channel_ns import api as channelNS
 
 class fixedAPI(Api):
     # Monkeyfixed API IAW https://github.com/noirbizarre/flask-restplus/issues/223
@@ -30,3 +31,4 @@ api_v1 = Blueprint('api', __name__, url_prefix='/api')
 api = fixedAPI(api_v1, version='1.0', title='OSP Hub API', description='OSP Hub API', default='Primary', default_label='OSP Hub Primary Endpoints', authorizations=authorizations)
 
 api.add_namespace(serverNS)
+api.add_namespace(channelNS)
