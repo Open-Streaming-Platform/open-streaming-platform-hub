@@ -18,7 +18,7 @@ class channel(db.Model):
     channelLastUpdated = db.Column(db.DateTime)
     channelImage = db.Column(db.String(2048))
 
-    def __init__(self, serverId, channelName, channelUsername, channelDescription, channelLocation, channelImage):
+    def __init__(self, serverId, channelName, channelUsername, channelDescription, channelLocation, channelImage, isLive):
         self.serverId = serverId
         self.channelName = channelName
         self.channelOwnerUsername = channelUsername
@@ -28,6 +28,7 @@ class channel(db.Model):
         self.channelLive = False
         self.channelLastUpdated = datetime.datetime.now()
         self.channelImage = channelImage
+        self.channelLive = isLive
 
     def update_info(self):
         try:
