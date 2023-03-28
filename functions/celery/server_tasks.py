@@ -15,7 +15,7 @@ log = logging.getLogger("app.functions.celery.scheduler.channel_tasks")
 def setup_server_tasks(sender, **kwargs):
     sender.add_periodic_task(120, verify_servers.s(), name='Validate Unconfirmed Servers')
     sender.add_periodic_task(300, check_servers_heartbeat.s(), name='Check Servers Online')
-    sender.add_periodic_task(480, check_server_hub_channels.s(), name='Get Server Channels')
+    sender.add_periodic_task(480, check_servers_hub_channels.s(), name='Get Server Channels')
     return True
 
 @celery.task(bind=True)
@@ -40,6 +40,13 @@ def check_servers_heartbeat(self):
 @celery.task(bind=True)
 def check_server_heartbeat(self, serverId):
     server_func.checkServerOnline(serverId)
+    return True
+
+@celery.task(bind=True)
+def check_servers_hub_channels(self):
+    serverQuery = servers.server.query.filter_by(serverConfirmed=True, serverActive=True).with_entities(servers.server.id).all()
+    for server in serverQuery:
+        results = subtask("functions.celery.server_tasks.check_server_hub_channels", args=(server.id,)).apply_async()
     return True
 
 @celery.task(bind=True)
@@ -75,11 +82,6 @@ def check_server_hub_channels(self, serverId):
     db.session.commit()
     return True
     
-
-    
-
-
-
 @celery.task(bind=True)
 def get_server_active_channels(self, serverId):
     results = server_func.getServerLiveChannels(serverId)
