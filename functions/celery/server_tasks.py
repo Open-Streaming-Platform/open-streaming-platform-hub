@@ -13,9 +13,9 @@ log = logging.getLogger("app.functions.celery.scheduler.channel_tasks")
 
 
 def setup_server_tasks(sender, **kwargs):
-    sender.add_periodic_task(120, verify_servers.s(), name='Validate Unconfirmed Servers')
-    sender.add_periodic_task(300, check_servers_heartbeat.s(), name='Check Servers Online')
-    sender.add_periodic_task(480, check_servers_hub_channels.s(), name='Get Server Channels')
+    sender.add_periodic_task(300, verify_servers.s(), name='Validate Unconfirmed Servers')
+    sender.add_periodic_task(240, check_servers_heartbeat.s(), name='Check Servers Online')
+    sender.add_periodic_task(280, check_servers_hub_channels.s(), name='Get Server Channels')
     return True
 
 @celery.task(bind=True)
@@ -54,7 +54,7 @@ def check_server_hub_channels(self, serverId):
     results = server_func.getServerHubChannels(serverId)
     # Iterate over for Existing Channels
     returnedIds = []
-    existingIds = [x.id for x in channels.channel.query.filter_by(serverId=serverId).with_entities(channels.channel.id).all()]
+    existingIds = [x.channelLocation for x in channels.channel.query.filter_by(serverId=serverId).with_entities(channels.channel.channelLocation).all()]
 
     for result in results:
         returnedIds.append(result['channelEndpointID'])
@@ -83,7 +83,7 @@ def check_server_hub_channels(self, serverId):
             ))
     for existing in existingIds:
         if existing not in returnedIds:
-            channels.channel.query.filter_by(id=existing).delete()
+            channels.channel.query.filter_by(channelLocation=existing).delete()
     db.session.commit()
     return True
     
