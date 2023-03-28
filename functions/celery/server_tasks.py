@@ -61,14 +61,14 @@ def check_server_hub_channels(self, serverId):
         existingChannel = channels.channel.query.filter_by(serverId=serverId, channelLocation=result['channelEndpointID']).with_entities(channels.channel.id).first()
         if existingChannel is None:
             newChan = (
-                channels.channel(serverId, result['channelName'], result['owningUserName'], result['description'], result['channelEndpointId'], result['channelImage']))
+                channels.channel(serverId, result['channelName'], result['owningUsername'], result['description'], result['channelEndpointId'], result['channelImage']))
             db.session.add(newChan)
         else:
             channels.channel.query.filter_by(id=existingChannel.id).update(dict(
                     serverId = serverId,
                     channelName = result['channelName'],
                     channelDescription =  result['description'],
-                    channelOwnerUsername = result['owningUserName'],
+                    channelOwnerUsername = result['owningUsername'],
                     channelOwnerPicture = "",
                     channelLocation = result['channelEndpointId'],
                     channelViewers = result['currentViews'],
