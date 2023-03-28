@@ -16,6 +16,6 @@ class api_server_root(Resource):
         Lists all attached channels
         """
 
-        serversQuery = channels.channel.query.all()
+        channelQuery = channels.channel.query.all()
         db.session.commit()
-        return {'results': [ob.serialize() for ob in serversQuery if ob.serverActive is True]}
+        return {'results': [ob.serialize() for ob in channelQuery]}
