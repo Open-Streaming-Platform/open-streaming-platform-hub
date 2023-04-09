@@ -29,6 +29,7 @@ from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
 import redis
 from flask import Flask, redirect, request, abort, flash, current_app, session
+from flask_cors import CORS
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask.wrappers import Request
 from flask_migrate import Migrate
@@ -92,6 +93,9 @@ class AnyJsonRequest(Request):
             return super().on_json_loading_failed(e)
 
 app.request_class = AnyJsonRequest
+
+# Enable CORS
+CORS(app)
 
 # ----------------------------------------------------------------------------#
 # Set Logging Configuration
