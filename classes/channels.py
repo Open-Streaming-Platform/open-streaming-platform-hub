@@ -78,4 +78,6 @@ class channel(db.Model):
             'channelLive': self.channelLive,
             'channelLastUpdated': str(self.channelLastUpdated),
             'channelImage': self.channelImage,
+            'channelOwnerUsername': self.channelOwnerUsername,
+            'channelOwnerPicture': self.channelOwnerPicture
         }

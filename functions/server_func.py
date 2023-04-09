@@ -1,3 +1,4 @@
+from typing import Union, Iterable
 import requests, logging, datetime
 from classes import servers
 from classes.shared import db
@@ -91,6 +92,15 @@ def updateServerTopics(serverId):
         db.session.commit()
         db.session.close()
     return parsed
+
+def formatQueryReturn(data):
+    newArray = []
+    for row in data:
+        d = {}
+        for column in row.__table__.columns:
+            d[column.name] = str(getattr(row, column.name))
+        newArray.append(d)
+    return newArray
 
 def updateServerLiveStreams(serverId):
     streams = getServerAPI(serverId, 'stream/')

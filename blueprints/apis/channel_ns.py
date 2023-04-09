@@ -5,7 +5,7 @@ from flask_restx import Api, Resource, reqparse, Namespace
 from classes import channels, servers
 from classes.shared import db
 
-import functions
+from functions import server_func
 
 api = Namespace('channel', description='Channel Related Queries and Functions')
 
@@ -19,3 +19,31 @@ class api_server_root(Resource):
         channelQuery = channels.channel.query.all()
         db.session.commit()
         return {'results': [ob.serialize() for ob in channelQuery]}
+    
+@api.route('/live')
+class api_server_live(Resource):
+    def get(self) -> dict:
+        """
+        Lists all Live Channels
+        """
+        channelQuery = (
+            channels.channel.query
+            .filter_by(channelLive=True)
+            .join(servers.server, channels.channel.serverId == servers.server.id)
+            .with_entities(
+                servers.server.serverProtocol,
+                servers.server.serverAddress,
+                servers.server.serverName,
+                servers.server.serverLastUpdate,
+                channels.channel.channelLocation,
+                channels.channel.channelImage,
+                channels.channel.channelName,
+                channels.channel.channelDescription,
+                channels.channel.channelOwnerUsername,
+                channels.channel.channelOwnerPicture,
+                channels.channel.channelViewers,
+                channels.channel.channelLastUpdated
+            )
+            .all()
+        )
+        return {'results': server_func.formatQueryReturn(channelQuery)}
