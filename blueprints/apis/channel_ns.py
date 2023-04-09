@@ -51,7 +51,7 @@ class api_server_live(Resource):
             val = {
                 "serverProtocol": chan.serverProtocol,
                 "serverAddres": chan.serverAddress,
-                "serverName": chan.serverName.serverName,
+                "serverName": chan.serverName,
                 "serverLastUpdate": str(chan.serverLastUpdate),
                 "channelLocation": chan.channelLocation,
                 "channelImage": chan.channelImage,
