@@ -79,7 +79,8 @@ def check_server_hub_channels(self, serverId):
                     channelViewers = result['currentViews'],
                     channelLive = isLive,
                     channelLastUpdated = datetime.datetime.now(),
-                    channelImage = result['channelImage']
+                    channelImage = result['channelImage'],
+                    channelNSFW = result['hubNSFW']
             ))
     for existing in existingIds:
         if existing not in returnedIds:

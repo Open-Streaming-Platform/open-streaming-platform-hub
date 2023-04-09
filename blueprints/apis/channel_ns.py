@@ -60,7 +60,8 @@ class api_server_live(Resource):
                 "channelOwnerUsername": chan.channelOwnerUsername,
                 "channelOwnerPicture": chan.channelOwnerPicture,
                 "channelViewers": chan.channelViewers,
-                "channelLastUpdated": str(chan.channelLastUpdated)
+                "channelLastUpdated": str(chan.channelLastUpdated),
+                "channelNSFW": chan.channelNSFW
             }
             returnArray.append(val)
 

@@ -17,6 +17,7 @@ class channel(db.Model):
     channelLive = db.Column(db.Boolean)
     channelLastUpdated = db.Column(db.DateTime)
     channelImage = db.Column(db.String(2048))
+    channelNSFW = db.Column(db.Boolean)
 
     def __init__(self, serverId, channelName, channelUsername, channelDescription, channelLocation, channelImage, isLive):
         self.serverId = serverId
@@ -29,6 +30,7 @@ class channel(db.Model):
         self.channelLastUpdated = datetime.datetime.now()
         self.channelImage = channelImage
         self.channelLive = isLive
+        self.channelNSFW = False
 
     def update_info(self):
         try:
@@ -79,5 +81,6 @@ class channel(db.Model):
             'channelLastUpdated': str(self.channelLastUpdated),
             'channelImage': self.channelImage,
             'channelOwnerUsername': self.channelOwnerUsername,
-            'channelOwnerPicture': self.channelOwnerPicture
+            'channelOwnerPicture': self.channelOwnerPicture,
+            'channelNSFW': self.channelNSFW
         }
