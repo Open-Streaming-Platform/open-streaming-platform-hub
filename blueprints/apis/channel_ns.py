@@ -42,7 +42,8 @@ class api_server_live(Resource):
                 channels.channel.channelOwnerUsername,
                 channels.channel.channelOwnerPicture,
                 channels.channel.channelViewers,
-                channels.channel.channelLastUpdated
+                channels.channel.channelLastUpdated,
+                channels.channel.channelNSFW
             )
             .all()
         )
