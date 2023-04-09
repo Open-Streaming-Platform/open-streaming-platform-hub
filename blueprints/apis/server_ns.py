@@ -85,3 +85,17 @@ class api_server_root(Resource):
             db.session.commit()
             return {'results': {'success': True, 'message': 'Info: Server Removed', 'id': str(serverUUID)}}, 200
         return {'results': {'success': False, 'message': 'Error: Missing Required Arguments'}}, 400
+    
+@api.route('/<serverUUID>')
+class api_server_singleServer(Resource):
+    def get(self, serverUUID):
+        """
+        Lists Server UUID Status
+        """
+
+        serverQuery = servers.server.query.filter_by(serverId=serverUUID).first()
+        db.session.commit()
+        if serverQuery != None:
+            return {'results': [serverQuery.serialize()]}
+        else:
+            return {'results': []}

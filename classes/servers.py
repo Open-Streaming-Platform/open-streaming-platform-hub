@@ -15,8 +15,8 @@ class server(db.Model):
     serverLastUpdate = db.Column(db.DateTime)
     serverName = db.Column(db.String(255))
     serverToken = db.Column(db.String(512), unique=True)
-    channels = db.relationship('channel', backref='server', cascade="all, delete-orphan", lazy="joined")
-    topics = db.relationship('topic', backref='server', cascade="all, delete-orphan", lazy="joined")
+    channels = db.relationship('channel', backref='server', cascade="all, delete-orphan", lazy="noload")
+    topics = db.relationship('topic', backref='server', cascade="all, delete-orphan", lazy="noload")
 
     def __init__(self, serverAddress, serverProtocol):
         self.serverId = str(uuid.uuid4())
