@@ -46,4 +46,22 @@ class api_server_live(Resource):
             )
             .all()
         )
-        return {'results': server_func.formatQueryReturn(channelQuery)}
+        returnArray = []
+        for chan in channelQuery:
+            val = {
+                "serverProtocol": chan.serverProtocol,
+                "serverAddres": chan.serverAddress,
+                "serverName": chan.serverName.serverName,
+                "serverLastUpdate": str(chan.serverLastUpdate),
+                "channelLocation": chan.channelLocation,
+                "channelImage": chan.channelImage,
+                "channelName": chan.channelName,
+                "channelDescription": chan.channelDescription,
+                "channelOwnerUsername": chan.channelOwnerUsername,
+                "channelOwnerPicture": chan.channelOwnerPicture,
+                "channelViewers": chan.channelViewers,
+                "channelLastUpdated": str(chan.channelLastUpdated)
+            }
+            returnArray.append(val)
+
+        return {'results': returnArray}
