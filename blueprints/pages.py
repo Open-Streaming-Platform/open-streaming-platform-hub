@@ -6,6 +6,4 @@ root_bp = Blueprint('root', __name__)
 
 @root_bp.route('/')
 def landing_page():
-    serverQuery = servers.server.query.all()
-    channelQuery = channels.channel.query.filter_by(channelLive=True)
-    return render_template('/index.html', serverList=serverQuery, channelList=channelQuery)
+    return render_template('/index.html')

@@ -49,7 +49,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.routers.osphubapi.rule: Host(`hubapi.internal.divby0.net`)
-      traefik.port: 5000555
+      traefik.port: 50555
     environment:
       - OSP_CORE_TYPE=hub
       - OSP_REDIS_HOST=osphub_redis

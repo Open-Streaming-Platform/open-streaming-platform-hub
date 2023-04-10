@@ -1,0 +1,79 @@
+:root {
+    --bg-color: #2F2C2C;
+    --txt-color: white;
+    --streamcard-meta-panel-subcolor: #cedaed;
+    --streamcard-meta-panel-color: #3E3D3D;
+    --list-container-color: #1F1F1F;
+    --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--txt-color);
+    width: 100%;
+}
+
+.zoom {
+    transition: transform .2s;
+}
+
+.zoom:hover {
+    -ms-transform: scale(1.05); /* IE 9 */
+    -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.03);
+}
+
+.dark-link {
+    color: blue;
+}
+
+
+.boxShadow {
+    box-shadow: var(--box-shadow);
+}
+
+.liveChannels {
+    width: 100%;
+    border-radius: 6px 6px;
+    padding: 20px 20px;
+    background-color: var(--list-container-color);
+}
+
+.liveChannels a {
+    text-decoration: none;
+    color: white;
+}
+
+.liveChannels ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.streamcard-metadata {
+    margin-top: 0;
+    background-color: var(--streamcard-meta-panel-color);
+    border-radius: 0 0 6px 6px;
+    padding: 5px;
+}
+
+.streamcard-user-img {
+    width: 42px;
+    height: 42px;
+    position: relative;
+    top: 4px;
+    left: 5px;
+}
+
+.streamcard-metadata-description {
+    width: 320px;
+    color: var(--streamcard-meta-panel-subcolor);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.streamcard-img {
+    border-radius: 6px 6px 0 0;
+    max-width: 320px;
+}
