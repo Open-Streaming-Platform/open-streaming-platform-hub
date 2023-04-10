@@ -132,11 +132,9 @@ def handle_db_exceptions(error):
 
 # Import Blueprints
 from blueprints.pages import root_bp
-from blueprints.debug import debug_bp
 from blueprints.api import api_v1
 
 app.register_blueprint(root_bp)
-app.register_blueprint(debug_bp)
 app.register_blueprint(api_v1)
 
 @app.teardown_appcontext
