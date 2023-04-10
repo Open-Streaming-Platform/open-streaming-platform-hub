@@ -33,7 +33,7 @@ function updateLiveChannels(data) {
                     <div class="streamcard-metadata boxShadow">\
                         <div class="row">\
                             <div class="col-auto">\
-                                <img src="' + streamerPicture + '"onerror="this.src=\'img/user2.png\'" class="streamcard-user-img rounded-circle boxShadow"> \
+                                <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" class="streamcard-user-img rounded-circle boxShadow"> \
                             </div> \
                             <div class="col-6">\
                             <b>' + channelName + '</b><br>\
@@ -66,7 +66,7 @@ function enableGifHover() {
     );
 }
 
-const hubURL = "http://hubapi.internal.divby0.net/api/channel/live";
+const hubURL = "/api/channel/live";
 
 document.addEventListener("DOMContentLoaded", function(){
     getHubLiveChannels(hubURL)
