@@ -72,6 +72,8 @@ function updateLiveChannels(data) {
         ul.appendChild(li);
     }
     enableGifHover();
+    $('#liveChannelsLoader').hide();
+    $('#liveChannelsList').show();
 }
 
 function enableGifHover() {

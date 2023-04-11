@@ -23,7 +23,12 @@
                 </div>
                 <h3>Channels Online Now...</h3>
                 <div id="liveChannels" class="liveChannels boxShadow">
-                    <ul id="liveChannelsList" class="d-flex flex-wrap justify-content-md-start justify-content-evenly list">
+                    <div id="liveChannelsLoader" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <ul id="liveChannelsList" class="d-flex flex-wrap justify-content-md-start justify-content-evenly list" style="display:none;">
                     </ul>
                 </div>
             </div>
