@@ -5,6 +5,7 @@
     --streamcard-meta-panel-color: #3E3D3D;
     --list-container-color: #1F1F1F;
     --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    --text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 body {
@@ -27,9 +28,35 @@ body {
     color: blue;
 }
 
-
 .boxShadow {
     box-shadow: var(--box-shadow);
+}
+
+.textShadow {
+    text-shadow: var(--text-shadow);
+}
+
+.nsfw {
+    display: none;
+}
+
+.content {
+    position: relative;
+    top: 75px;
+}
+
+.live-badge {
+    padding: 2px 8px;
+    background-color: #FF2020;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.live-viewers-badge {
+    padding: 2px 8px;
+    background-color: #206CFF;
+    border-radius: 4px;
+    text-align: center;
 }
 
 .liveChannels {
@@ -57,6 +84,15 @@ body {
     padding: 5px;
 }
 
+.streamcard-badges {
+    color: white;
+    position: relative;
+    top:40px;
+    left: 5px;
+    margin-top: -40px;
+    padding: 5px;
+}
+
 .streamcard-user-img {
     width: 42px;
     height: 42px;
@@ -76,4 +112,10 @@ body {
 .streamcard-img {
     border-radius: 6px 6px 0 0;
     max-width: 320px;
+}
+
+.nsfwOverlay {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
 }

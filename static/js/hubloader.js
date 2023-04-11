@@ -8,6 +8,13 @@ async function getHubLiveChannels(url) {
 
 function updateLiveChannels(data) {
     var ul = document.getElementById("liveChannelsList");
+    
+    // Verify Length of Returned Data
+    if (data.length > 0) {
+        data.sort((a, b) => (a.channelViewers < b.channelViewers) ? 1 : -1) // Sort by # of Viewers
+    }
+
+    // Iterate and Create Hub Stream Cards
     for (let i = 0; i < data.length; i++) {
         streamData = data[i];
         var channelUUID = streamData['channelLocation'];
@@ -18,6 +25,8 @@ function updateLiveChannels(data) {
         var streamerUsername = streamData['channelOwnerUsername'];
         var streamerPicture = serverURI + "/images/" + streamData['channelOwnerPicture'];
         var channelDescription = streamData['channelDescription'];
+        var channelViewers = streamData['channelViewers']
+        var channelNSFW = streamData['channelNSFW']
 
         if (channelDescription === null || channelDescription === "") {
             channelDescription = "No Description Provided...";
@@ -25,18 +34,31 @@ function updateLiveChannels(data) {
 
         var li = document.createElement("li");
         li.setAttribute("id", "channel-" + channelUUID);
-        li.setAttribute("class", "mx-2");
+        
+        // Set NSFW Class if Channel is identified as NSFW
+        if (channelNSFW === true){
+            li.setAttribute("class", "mx-2 nsfw")
+        } else (
+            li.setAttribute("class", "mx-2")
+        );
+        
         li.innerHTML = '\
             <a href="' + linkURL + '">\
                 <div class="zoom">\
-                    <img class="streamcard-img boxShadow gif" src="' + linkImageURL + '">\
+                    <div class="streamcard-thumbBox">\
+                        <div class="streamcard-badges">\
+                            <span class="live-badge boxShadow textShadow"><b>Live</b></span>\
+                            <span class="live-viewers-badge boxShadow textShadow ms-1"><i class="bi bi-eye-fill pe-1"></i> <b class="justify-content-end">' + channelViewers + '</b></span>\
+                        </div>\
+                        <img class="streamcard-img boxShadow gif lazy" src="' + linkImageURL + '">\
+                    </div>\
                     <div class="streamcard-metadata boxShadow">\
                         <div class="row">\
                             <div class="col-auto">\
-                                <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" class="streamcard-user-img rounded-circle boxShadow"> \
+                                <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" class="streamcard-user-img rounded-circle boxShadow lazy"> \
                             </div> \
                             <div class="col-6">\
-                            <b>' + channelName + '</b><br>\
+                            <b class="textShadow">' + channelName + '</b><br>\
                             ' + streamerUsername + '<br>\
                             </div>\
                         </div> \
@@ -67,6 +89,7 @@ function enableGifHover() {
 }
 
 const hubURL = "/api/channel/live";
+//hubURL = "https://hub.openstreamingplatform.com/api/channel/live"
 
 document.addEventListener("DOMContentLoaded", function(){
     getHubLiveChannels(hubURL)
