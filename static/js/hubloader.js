@@ -50,7 +50,7 @@ function updateLiveChannels(data) {
                             <span class="live-badge boxShadow textShadow"><b>Live</b></span>\
                             <span class="live-viewers-badge boxShadow textShadow ms-1"><i class="bi bi-eye-fill pe-1"></i> <b class="justify-content-end">' + channelViewers + '</b></span>\
                         </div>\
-                        <img class="streamcard-img boxShadow gif lazy" src="' + linkImageURL + '">\
+                        <img class="streamcard-img boxShadow gif lazy" src="/static/img/video-placeholder.jpg" data-src="' + linkImageURL + '">\
                     </div>\
                     <div class="streamcard-metadata boxShadow">\
                         <div class="row">\
