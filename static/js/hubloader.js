@@ -6,6 +6,18 @@ async function getHubLiveChannels(url) {
     }
 }
 
+async function updateChannelImages(imageMap) {
+    for (let i = 0; i < imageMap.length; i++) {
+        imgObj = imageMap[i]
+        document.getElementById('stream_' + imgObj['imgDiv']).src = imgObj['imgSrc'];
+    }
+    enableGifHover();
+}
+
+function revisedRandId() {
+    return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+}
+
 function updateLiveChannels(data) {
     var ul = document.getElementById("liveChannelsList");
     
@@ -13,6 +25,8 @@ function updateLiveChannels(data) {
     if (data.length > 0) {
         data.sort((a, b) => (a.channelViewers < b.channelViewers) ? 1 : -1) // Sort by # of Viewers
     }
+    
+    imagesMap = []
 
     // Iterate and Create Hub Stream Cards
     for (let i = 0; i < data.length; i++) {
@@ -27,6 +41,10 @@ function updateLiveChannels(data) {
         var channelDescription = streamData['channelDescription'];
         var channelViewers = streamData['channelViewers']
         var channelNSFW = streamData['channelNSFW']
+
+        imgDivId = revisedRandId()
+        imgObj = {"imgDiv": imgDivId, "imgSrc": linkImageURL }
+        imagesMap.push(imgObj)
 
         if (channelDescription === null || channelDescription === "") {
             channelDescription = "No Description Provided...";
@@ -44,18 +62,18 @@ function updateLiveChannels(data) {
         
         li.innerHTML = '\
             <a href="' + linkURL + '">\
-                <div class="zoom">\
+                <div class="zoom fade-in">\
                     <div class="streamcard-thumbBox">\
                         <div class="streamcard-badges">\
                             <span class="live-badge boxShadow textShadow"><b>Live</b></span>\
                             <span class="live-viewers-badge boxShadow textShadow ms-1"><i class="bi bi-eye-fill pe-1"></i> <b class="justify-content-end">' + channelViewers + '</b></span>\
                         </div>\
-                        <img class="streamcard-img boxShadow gif lazy" src="' + linkImageURL + '" data-src="/static/img/video-placeholder.jpg" onerror="this.src=\'/static/img/video-placeholder.jpg\';">\
+                        <img id="stream_' + imgDivId +'" class="streamcard-img boxShadow gif lazy" src="/static/img/video-placeholder.jpg" loading="lazy" onerror="this.src=\'/static/img/video-placeholder.jpg\';">\
                     </div>\
                     <div class="streamcard-metadata boxShadow">\
                         <div class="row">\
                             <div class="col-auto">\
-                                <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" class="streamcard-user-img rounded-circle boxShadow lazy"> \
+                                <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" loading="lazy" class="streamcard-user-img rounded-circle boxShadow lazy"> \
                             </div> \
                             <div class="col-6">\
                             <b class="textShadow">' + channelName + '</b><br>\
@@ -71,9 +89,11 @@ function updateLiveChannels(data) {
             </a>';
         ul.appendChild(li);
     }
-    enableGifHover();
+    
     $('#liveChannelsLoader').hide();
     $('#liveChannelsList').show();
+
+    return imagesMap;
 }
 
 function enableGifHover() {
@@ -90,10 +110,11 @@ function enableGifHover() {
     );
 }
 
-const hubURL = "/api/channel/live";
-//hubURL = "https://hub.openstreamingplatform.com/api/channel/live"
+//const hubURL = "/api/channel/live";
+hubURL = "https://hub.openstreamingplatform.com/api/channel/live"
 
 document.addEventListener("DOMContentLoaded", function(){
     getHubLiveChannels(hubURL)
-    .then((data) => updateLiveChannels(data)) 
+    .then((data) => updateLiveChannels(data))
+    .then((imageMap) => updateChannelImages(imageMap)) 
 });

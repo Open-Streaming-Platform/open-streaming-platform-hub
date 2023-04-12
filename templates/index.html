@@ -4,12 +4,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
         <link rel="stylesheet" href="/static/css/base.css">
+        <link rel="stylesheet" href="/static/css/animations.css">
     </head>
     <body>
         <nav class="navbar fixed-top navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
-                    <img src="/static/img/nav-logo.png" alt="Open Streaming Platform Hub Alpha" width="48"> <span class="mx-2"><b>Hub α</b></span>
+                    <img src="/static/img/nav-logo.png" alt="Open Streaming Platform Hub Alpha" width="48"> <span class="mx-2 textShadow"><b>Hub α</b></span>
                 </a>
             </div>
         </nav>
@@ -25,7 +26,7 @@
                 <div id="liveChannels" class="liveChannels boxShadow">
                     <div id="liveChannelsLoader" class="text-center">
                         <div class="spinner-border text-primary" role="status">
-                          <span class="visually-hidden">Loading...</span>
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
                     <ul id="liveChannelsList" class="d-flex flex-wrap justify-content-md-start justify-content-evenly list" style="display:none;">
@@ -35,14 +36,18 @@
         </div>
         <div class="nsfwOverlay">
             <div class="form-check form-switch">
-                <input id="nsfwToggle" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">NSFW</label>
+                <input id="nsfwToggle" class="form-check-input boxShadow" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label textShadow" for="flexSwitchCheckDefault">NSFW</label>
             </div>
         </div>
+        <script src="https://browser.sentry-cdn.com/7.47.0/bundle.tracing.min.js" integrity="sha384-qF/zNluOVdijBRLQ/TTHPBb/p7uxFxb+/j3eDdiKG0VF0sHCkAuwJ+Yxv6zCHR/O" crossorigin="anonymous"></script>
+        <script src="/static/js/sentry.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
         <script src="/static/vendor/lazyload/js/lazyload.min.js"></script>
         <script src="/static/js/ui.js"></script>
         <script src="/static/js/hubloader.js"></script>
+
+        
     </body>
 </html>
