@@ -137,7 +137,7 @@ function updateServers(data) {
         
         linkURL = serverProtocol + '://' + serverDomain;
 
-        if (serverImage !== undefined){ 
+        if (serverImage !== undefined && serverImage !== null ){ 
             fullImagePath = linkURL + serverImage;
         } else {
             fullImagePath = "/static/img/user2.png";
@@ -187,9 +187,9 @@ function enableGifHover() {
 }
 
 //const hubURL = "/api/channel/live";
-hubDomain = "https://hub.openstreamingplatform.com"
-hubLiveChannelsEndpoint = "/api/channel/live"
-hubServersEndpoint = "/api/server"
+hubDomain = "https://hub.openstreamingplatform.com";
+hubLiveChannelsEndpoint = "/api/channel/live";
+hubServersEndpoint = "/api/server";
 
 document.addEventListener("DOMContentLoaded", function(){
     callHubAPI(hubDomain + hubLiveChannelsEndpoint)
