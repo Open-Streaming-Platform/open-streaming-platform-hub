@@ -48,6 +48,7 @@ def checkServerOnline(serverId):
         db.session.commit()
         db.session.close()
         results = True
+        verifyServer(serverId)
     return results
 
 def getServerHubChannels(serverId):
