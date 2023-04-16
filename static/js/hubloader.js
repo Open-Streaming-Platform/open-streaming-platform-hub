@@ -187,7 +187,7 @@ function enableGifHover() {
 }
 
 //const hubURL = "/api/channel/live";
-hubDomain = "https://hub.openstreamingplatform.com";
+hubDomain = "";
 hubLiveChannelsEndpoint = "/api/channel/live";
 hubServersEndpoint = "/api/server";
 
