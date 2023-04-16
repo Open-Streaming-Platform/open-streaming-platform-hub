@@ -32,6 +32,7 @@ def verifyServer(serverId):
             if 'hubURL' in serverSettings and 'hubEnabled' in serverSettings and serverSettings['hubEnabled'] is True:
                 server_query.serverConfirmed = True
                 server_query.serverName = serverSettings['siteName']
+                server_query.serverImage = serverSettings['siteLogo']
                 return_confirmation = True
             else:
                 server_query.serverConfirmed = False

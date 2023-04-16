@@ -15,6 +15,7 @@ class server(db.Model):
     serverLastUpdate = db.Column(db.DateTime)
     serverName = db.Column(db.String(255))
     serverToken = db.Column(db.String(512), unique=True)
+    serverImage = db.Column(db.String(512))
     channels = db.relationship('channel', backref='server', cascade="all, delete-orphan", lazy="noload")
     topics = db.relationship('topic', backref='server', cascade="all, delete-orphan", lazy="noload")
 
@@ -38,6 +39,7 @@ class server(db.Model):
             'serverAddress': self.serverAddress,
             'serverProtocol': self.serverProtocol,
             'serverActive': self.serverActive,
+            'serverImage': self.serverImage,
             'serverConfirmed': self.serverConfirmed,
             'serverLastUpdate': str(self.serverLastUpdate),
             'serverName': self.serverName

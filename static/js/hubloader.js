@@ -1,4 +1,19 @@
-async function getHubLiveChannels(url) {
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]
+        ];
+    }
+    return array;
+}
+
+async function callHubAPI(url) {
     const response = await fetch(url);
     var data = await response.json();
     if (response) {
@@ -43,7 +58,7 @@ function updateLiveChannels(data) {
         var channelNSFW = streamData['channelNSFW']
 
         imgDivId = revisedRandId()
-        imgObj = {"imgDiv": imgDivId, "imgSrc": linkImageURL }
+        imgObj = { "imgDiv": imgDivId, "imgSrc": linkImageURL }
         imagesMap.push(imgObj)
 
         if (channelDescription === null || channelDescription === "") {
@@ -75,8 +90,8 @@ function updateLiveChannels(data) {
                             <div class="col-auto">\
                                 <img src="' + streamerPicture + '"onerror="this.src=\'/static/img/user2.png\'" loading="lazy" class="streamcard-user-img rounded-circle boxShadow lazy"> \
                             </div> \
-                            <div class="col-6">\
-                            <b class="textShadow">' + channelName + '</b><br>\
+                            <div class="col-9">\
+                            <b class="streamcard-name textShadow">' + channelName + '</b><br>\
                             ' + streamerUsername + '<br>\
                             </div>\
                         </div> \
@@ -84,6 +99,7 @@ function updateLiveChannels(data) {
                             <div class="col-12 streamcard-metadata-description">\
                                 <small>' + channelDescription + '</small>\
                             </div>\
+                        </div>\
                     </div>\
                 </div>\
             </a>';
@@ -94,6 +110,66 @@ function updateLiveChannels(data) {
     $('#liveChannelsList').show();
 
     return imagesMap;
+}
+
+function updateServers(data) {
+    var ul = document.getElementById('serversList');
+
+    filteredData = data.filter(function( obj ) {
+        return obj.serverActive !== false;
+    });
+
+    // Verify Length of Returned Data
+    if (filteredData.length > 0) {
+        filteredData = shuffle(filteredData);
+
+    }
+    
+    imagesMap = []
+    for (let i = 0; i < filteredData.length; i++) {
+
+        serverData = filteredData[i];
+        serverUUID = serverData['serverId'];
+        serverName = serverData['serverName'];
+        serverProtocol = serverData['serverProtocol'];
+        serverDomain = serverData['serverAddress'];
+        serverImage = serverData['serverImage'];
+        
+        linkURL = serverProtocol + '://' + serverDomain;
+
+        if (serverImage !== undefined){ 
+            fullImagePath = linkURL + serverImage;
+        } else {
+            fullImagePath = "/static/img/user2.png";
+        }
+
+        imgDivId = revisedRandId()
+        imgObj = { "imgDiv": imgDivId, "imgSrc": serverImage }
+        imagesMap.push(imgObj)
+
+        var li = document.createElement("li");
+        li.setAttribute("id", "server-" + serverUUID);
+        li.setAttribute("class", "mx-2")
+
+        li.innerHTML = '\
+            <a href="' + linkURL + '">\
+                <div class="zoom fade-in">\
+                    <div class="servercard-metadata boxShadow">\
+                        <div class="row">\
+                            <div class="col-auto">\
+                                <img src="' + fullImagePath + '"onerror="this.src=\'/static/img/user2.png\'" loading="lazy" class="streamcard-user-img rounded-circle boxShadow lazy"> \
+                            </div> \
+                            <div class="col-9">\
+                                <b class="servercard-name textShadow align-middle">' + serverName + '</b>\
+                            </div>\
+                        </div> \
+                    </div>\
+                </div>\
+            </a>';
+        ul.appendChild(li);
+    }
+    $('#serversLoader').hide();
+    $('#serversList').show();
 }
 
 function enableGifHover() {
@@ -111,10 +187,16 @@ function enableGifHover() {
 }
 
 //const hubURL = "/api/channel/live";
-hubURL = "https://hub.openstreamingplatform.com/api/channel/live"
+hubDomain = "https://hub.openstreamingplatform.com"
+hubLiveChannelsEndpoint = "/api/channel/live"
+hubServersEndpoint = "/api/server"
 
 document.addEventListener("DOMContentLoaded", function(){
-    getHubLiveChannels(hubURL)
+    callHubAPI(hubDomain + hubLiveChannelsEndpoint)
     .then((data) => updateLiveChannels(data))
-    .then((imageMap) => updateChannelImages(imageMap)) 
+    .then((imageMap) => updateChannelImages(imageMap));
+    
+    callHubAPI(hubDomain + hubServersEndpoint)
+    .then((data) => updateServers(data));
+
 });

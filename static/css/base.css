@@ -77,6 +77,13 @@ body {
     margin: 0; 
 }
 
+.streamcard-name {
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .streamcard-metadata {
     margin-top: 0;
     background-color: var(--streamcard-meta-panel-color);
@@ -112,6 +119,24 @@ body {
 .streamcard-img {
     border-radius: 6px 6px 0 0;
     max-width: 320px;
+}
+
+.servercard-metadata {
+    width: 320px;
+    height: 60px;
+    margin-top: 0;
+    background-color: var(--streamcard-meta-panel-color);
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.servercard-name {
+    position: relative;
+    top:10px;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nsfwOverlay {
