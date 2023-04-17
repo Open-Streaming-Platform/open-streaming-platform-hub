@@ -56,7 +56,7 @@ def getServerHubChannels(serverId):
     return serverSettings
 
 def getServerLiveChannels(serverId):
-    serverSettings = getServerAPI(serverId, 'channel/activeChannels')
+    serverSettings = getServerAPI(serverId, 'channel/hubChannelsLive')
     return serverSettings
     
 
