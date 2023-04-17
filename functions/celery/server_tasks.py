@@ -88,24 +88,24 @@ def check_server_hub_channels(self, serverId):
     db.session.commit()
     return True
     
-@celery.task(bind=True)
-def get_server_active_channels(self, serverId):
-    results = server_func.getServerLiveChannels(serverId)
-    for result in results:
-        channelQuery = (
-            channels.channel.query
-            .filter_by(serverId=serverId, channelLocation=result['channelEndpointID'])
-            .update(dict(
-                    channelName = result['channelName'],
-                    channelDescription =  result['description'],
-                    channelOwnerUsername = result['owningUsername'],
-                    channelOwnerPicture = result['owningUserImage'],
-                    channelLocation = result['channelEndpointID'],
-                    channelViewers = result['currentViews'],
-                    channelLive = True,
-                    channelLastUpdated = datetime.datetime.now(),
-                    channelImage = result['channelImage'],
-                    channelNSFW = result['hubNSFW']
-            ))
-        )
+#@celery.task(bind=True)
+#def get_server_active_channels(self, serverId):
+#    results = server_func.getServerLiveChannels(serverId)
+#    for result in results:
+#        channelQuery = (
+#            channels.channel.query
+#            .filter_by(serverId=serverId, channelLocation=result['channelEndpointID'])
+#            .update(dict(
+#                    channelName = result['channelName'],
+#                    channelDescription =  result['description'],
+#                    channelOwnerUsername = result['owningUsername'],
+#                    channelOwnerPicture = result['owningUserImage'],
+#                    channelLocation = result['channelEndpointID'],
+#                    channelViewers = result['currentViews'],
+#                    channelLive = True,
+#                    channelLastUpdated = datetime.datetime.now(),
+#                    channelImage = result['channelImage'],
+#                    channelNSFW = result['hubNSFW']
+#            ))
+#        )
         
