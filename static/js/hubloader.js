@@ -149,7 +149,7 @@ function updateServers(data) {
 
         var li = document.createElement("li");
         li.setAttribute("id", "server-" + serverUUID);
-        li.setAttribute("class", "mx-2 my-3")
+        li.setAttribute("class", "m-1")
 
         li.innerHTML = '\
             <a href="' + linkURL + '">\

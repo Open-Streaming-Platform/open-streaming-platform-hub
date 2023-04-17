@@ -62,7 +62,7 @@ body {
 .liveChannels {
     width: 100%;
     border-radius: 6px 6px;
-    padding: 20px 20px;
+    padding: 10px;
     background-color: var(--list-container-color);
 }
 
