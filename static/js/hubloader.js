@@ -70,9 +70,9 @@ function updateLiveChannels(data) {
         
         // Set NSFW Class if Channel is identified as NSFW
         if (channelNSFW === true){
-            li.setAttribute("class", "mx-2 nsfw")
+            li.setAttribute("class", "mx-2 my-3 nsfw")
         } else (
-            li.setAttribute("class", "mx-2")
+            li.setAttribute("class", "mx-2 my-3")
         );
         
         li.innerHTML = '\
@@ -149,7 +149,7 @@ function updateServers(data) {
 
         var li = document.createElement("li");
         li.setAttribute("id", "server-" + serverUUID);
-        li.setAttribute("class", "mx-2")
+        li.setAttribute("class", "mx-2 my-3")
 
         li.innerHTML = '\
             <a href="' + linkURL + '">\
