@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />-->
+        <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/vendor/bootstrap-icons/bootstrap-icons.css">
+        <link rel="stylesheet" href="/static/css/base.css">
+        <link rel="stylesheet" href="/static/css/animations.css">
+        {% block head %}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+
+        <footer>
+            {% block foot %}
+            {% endblock %}
+        </footer>
+
+        <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="/static/vendor/jquery/jquery-3.6.4.min.js"></script>
+        <script src="/static/vendor/lazyload/js/lazyload.min.js"></script>
+        <script src="/static/vendor/sentry/bundle.tracing.min.js"></script>
+        <script src="/static/js/sentry.js"></script>
+        {% block scripts %}
+        {% endblock %}
+
+    </body>
+</html>
+    

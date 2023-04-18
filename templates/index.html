@@ -1,66 +1,27 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-        <link rel="stylesheet" href="/static/css/base.css">
-        <link rel="stylesheet" href="/static/css/animations.css">
-    </head>
-    <body>
-        <nav class="navbar fixed-top navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <img src="/static/img/nav-logo.png" alt="Open Streaming Platform Hub Alpha" width="48"> <span class="mx-2 textShadow"><b>Hub α</b></span>
-                </a>
-            </div>
-        </nav>
-        <div class="container-fluid">
-            <div class="content m-4">
-                <div class="card text-white bg-dark mb-4 boxShadow">
-                    <h5 class="card-header">Message of the Day</h5>
-                    <div class="card-body bg-dark">
-                        <p class="card-text">OSP Hub is currently in Alpha.  This site is not complete and may not reflect the final state. For more information, please visit <a href="https://openstreamingplatform.com" class="dark-link">openstreamingplatform.com</a>.</p>
-                    </div>
-                </div>
-                <h3>Channels Online Now...</h3>
-                <div id="liveChannels" class="liveChannels boxShadow mb-4">
-                    <div id="liveChannelsLoader" class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <ul id="liveChannelsList" class="d-flex flex-wrap justify-content-center justify-content-evenly list" style="display:none;">
-                    </ul>
-                </div>
-                <h3>Hub's Communities</h3>
-                <div id="servers" class="liveChannels boxShadow">
-                    <div id="serversLoader" class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <ul id="serversList" class="d-flex flex-wrap justify-content-center justify-content-evenly list" style="display:none;">
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="nsfwOverlay">
-            <div class="form-check form-switch">
-                <input id="nsfwToggle" class="form-check-input boxShadow" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label textShadow" for="flexSwitchCheckDefault">NSFW</label>
-            </div>
-        </div>
-        <script src="https://browser.sentry-cdn.com/7.47.0/bundle.tracing.min.js" integrity="sha384-qF/zNluOVdijBRLQ/TTHPBb/p7uxFxb+/j3eDdiKG0VF0sHCkAuwJ+Yxv6zCHR/O" crossorigin="anonymous"></script>
-        <script src="/static/js/sentry.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-        <script src="/static/vendor/lazyload/js/lazyload.min.js"></script>
-        <script src="/static/js/ui.js"></script>
-        <script src="/static/js/hubloader.js"></script>
+{% extends "layout.html" %}
+{% import "macros/ui_base.html" as ui_base with context %}
+{% import "macros/content_blocks.html" as content_blocks with context %}
 
-        
-    </body>
-</html>
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+{{ ui_base.top_navbar() }}
+<div class="container-fluid">
+    <div class="content m-4 pb-4">
+        {{ ui_base.motd() }}
+        {{ content_blocks.liveChannels() }}
+        {{ content_blocks.communityServers() }}
+    </div>
+</div>
+{{ ui_base.nsfwOverlay() }}
+{%- endblock %}
+
+{% block scripts %}
+<script src="/static/js/ui.js"></script>
+<script src="/static/js/hubloader.js"></script>
+{% endblock %} 
+
+{% block foot %}
+{% endblock %}

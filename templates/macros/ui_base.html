@@ -1,0 +1,28 @@
+{% macro top_navbar() %}
+<nav class="navbar fixed-top navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/static/img/nav-logo.png" alt="Open Streaming Platform Hub Alpha" width="48"> <span class="mx-2 textShadow"><b>Hub α</b></span>
+        </a>
+    </div>
+</nav>
+{% endmacro %}
+
+{% macro motd() %}
+<div class="card text-white bg-dark mb-4 boxShadow">
+    <h5 class="card-header">Message of the Day</h5>
+    <div class="card-body bg-dark">
+        <p class="card-text">OSP Hub is currently in Alpha.  This site is not complete and may not reflect the final state. For more information, please visit <a href="https://openstreamingplatform.com" class="dark-link">openstreamingplatform.com</a>.</p>
+        <p class="card-text">This site reserves the right to remove any content posted.</p>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro nsfwOverlay() %}
+<div class="nsfwOverlay">
+    <div class="form-check form-switch">
+        <input id="nsfwToggle" class="form-check-input boxShadow" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label textShadow" for="flexSwitchCheckDefault">NSFW</label>
+    </div>
+</div>
+{% endmacro %}

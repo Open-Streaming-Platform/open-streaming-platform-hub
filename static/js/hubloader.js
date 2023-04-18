@@ -186,7 +186,7 @@ function enableGifHover() {
     );
 }
 
-//const hubURL = "/api/channel/live";
+// Endpoints
 hubDomain = "";
 hubLiveChannelsEndpoint = "/api/channel/live";
 hubServersEndpoint = "/api/server";
@@ -195,8 +195,9 @@ document.addEventListener("DOMContentLoaded", function(){
     callHubAPI(hubDomain + hubLiveChannelsEndpoint)
     .then((data) => updateLiveChannels(data))
     .then((imageMap) => updateChannelImages(imageMap));
-    
+});
+
+document.addEventListener("DOMContentLoaded", function() {
     callHubAPI(hubDomain + hubServersEndpoint)
     .then((data) => updateServers(data));
-
 });
