@@ -21,8 +21,7 @@ steps:
     password:
       from_secret: docker_password
     repo: deamos/osp-hub-api
-    auto_tag: true
-        tags: nightly
+    tags: nightly
     platforms:
       - linux/amd64
       - linux/arm64
@@ -76,8 +75,6 @@ steps:
     password:
       from_secret: docker_password
     repo: deamos/osp-hub-api
-    auto_tag: true
-        tags: nightly
     platforms:
       - linux/amd64
       - linux/arm64
