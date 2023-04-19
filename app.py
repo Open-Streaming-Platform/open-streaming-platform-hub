@@ -1,7 +1,9 @@
 # -*- coding: UTF-8 -*-
 # Flask Monkeypatch for Gevent
-#from gevent import monkey
-#monkey.patch_all(thread=True)
+from gevent import monkey
+monkey.patch_all(thread=True)
+
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 import os, logging
 from dotenv import load_dotenv
@@ -80,7 +82,7 @@ from classes import channels
 from classes import secrets
 
 app = Flask(__name__)
-
+app.wsgi_app = ProxyFix(app.wsgi_app)
 app.config["broker_url"] = RedisURL
 app.config["result_backend"] = RedisURL
 app.config['SQLALCHEMY_DATABASE_URI'] = config.dbLocation

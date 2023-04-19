@@ -189,7 +189,7 @@ function enableGifHover() {
 // Endpoints
 hubDomain = "";
 hubLiveChannelsEndpoint = "/api/channel/live";
-hubServersEndpoint = "/api/server";
+hubServersEndpoint = "/api/server/";
 
 document.addEventListener("DOMContentLoaded", function(){
     callHubAPI(hubDomain + hubLiveChannelsEndpoint)
