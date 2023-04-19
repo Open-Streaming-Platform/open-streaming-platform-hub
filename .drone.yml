@@ -1,9 +1,20 @@
 kind: pipeline
-name: test
+name: nightly-build
+
+trigger:
+  branch:
+    - nightly
+  event:
+    - push
+
+platform:
+  os: linux
+  arch: amd64
 
 steps:
 - name: build
-  image: plugins/docker
+  image: thegeeklab/drone-docker-buildx
+  privileged: true
   settings:
     username:
       from_secret: docker_username
@@ -11,6 +22,10 @@ steps:
       from_secret: docker_password
     repo: deamos/osp-hub-api
     auto_tag: true
+        tags: nightly
+    platforms:
+      - linux/amd64
+      - linux/arm64
   when:
     event:
       - push
@@ -26,6 +41,46 @@ steps:
       from_secret: password
     script:
       - cd /compose-files/open-streaming-platform-hub-api && sudo /bin/bash ./update.sh
+  when:
+    event:
+      - push
+
+---
+kind: pipeline
+name: prod-build
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: send-tags-to-tags-file
+  image: node
+  when:
+    event:
+      - push
+  commands:
+    - echo -n "$(cat version), latest" > .tags
+- name: build
+  image: thegeeklab/drone-docker-buildx
+  privileged: true
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: deamos/osp-hub-api
+    auto_tag: true
+        tags: nightly
+    platforms:
+      - linux/amd64
+      - linux/arm64
   when:
     event:
       - push
