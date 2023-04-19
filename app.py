@@ -17,6 +17,8 @@ config.debug = os.getenv('OSP_HUB_DEBUG')
 config.redisHost = os.getenv("OSP_REDIS_HOST")
 config.redisPort = os.getenv("OSP_REDIS_PORT")
 config.redisPassword = os.getenv("OSP_REDIS_PASSWORD")
+config.flaskSecretKey = os.getenv("OSP_FLASK_SECRET")
+config.passwordSalt = os.getenv("OSP_PASS_SALT")
 
 if config.debug is None:
     debug = False
@@ -33,7 +35,12 @@ from flask_cors import CORS
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask.wrappers import Request
 from flask_migrate import Migrate
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.menu import MenuLink
 from sqlalchemy import exc
+from flask_security import Security, current_user, auth_required, hash_password, \
+     SQLAlchemySessionUserDatastore
 
 # Initialize RedisURL Variable
 RedisURL = None
@@ -67,6 +74,7 @@ sentry_sdk.init(
 )
 
 # Modal Imports
+from classes import sec
 from classes import servers
 from classes import channels
 from classes import secrets
@@ -83,6 +91,10 @@ if config.dbLocation[:6] != "sqlite":
     app.config['SQLALCHEMY_POOL_TIMEOUT'] = 600
     app.config['MYSQL_DATABASE_CHARSET'] = "utf8"
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf8', 'pool_use_lifo': 'False', 'pool_size': 10, "pool_pre_ping": True}
+app.config['SECRET_KEY'] = config.flaskSecretKey
+app.config['SECURITY_PASSWORD_SALT'] = config.passwordSalt
+app.config["REMEMBER_COOKIE_SAMESITE"] = "strict"
+app.config["SESSION_COOKIE_SAMESITE"] = "strict"
 
 # ----------------------------------------------------------------------------#
 # Monkey Fix Flask-Restx issue (https://github.com/pallets/flask/issues/4552#issuecomment-1109785314)
@@ -211,7 +223,18 @@ try:
     db.session.commit()
 except:
     print("No DB Schema Exists")
+    
+# Setup Flask-Security
+user_datastore = SQLAlchemySessionUserDatastore(db.session, sec.User, sec.Role)
+app.security = Security(app, user_datastore)
 
+# Setup Flask-Admin
+from classes import admin
+admin = Admin(app, 'Admin Area', template_mode='bootstrap4', index_view=admin.MyAdminIndexView())
+admin.add_link(MenuLink(name='Home Page', url='/'))
+admin.add_view(ModelView(sec.User, db.session))
+admin.add_view(ModelView(servers.server, db.session))
+admin.add_view(ModelView(channels.channel, db.session))
 
 if __name__ == "__main__":
     app.run('0.0.0.0', port=5000, debug=debug)
