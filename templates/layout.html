@@ -4,7 +4,10 @@
         <meta charset="UTF-8">
         <title>Open Streaming Platform Hub</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {%- set url = request.url.split("//") %}
+        {%- if url[0] == "https:" %}
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+        {%- endif %}
         <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="/static/vendor/bootstrap-icons/bootstrap-icons.css">
         <link rel="stylesheet" href="/static/css/base.css">
