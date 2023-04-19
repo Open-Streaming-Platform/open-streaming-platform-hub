@@ -56,6 +56,8 @@ services:
       - OSP_REDIS_PORT=6379
       - OSP_REDIS_PASSWORD=
       - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      - OSP_PASS_SALT=CHANGEMETOSOMETHINGSUPERSECRETASAP
+      - OSP_FLASK_SECRET=CHANGEMETOSOMETHINGSUPERSECRETASAP
       # - TZ=ETC/UTC
     networks:
       - osphub
@@ -78,6 +80,8 @@ services:
       - OSP_REDIS_PORT=6379
       - OSP_REDIS_PASSWORD=
       - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      - OSP_PASS_SALT=
+      - OSP_FLASK_SECRET=
       # - TZ=ETC/UTC
     networks:
       - osphub
@@ -100,6 +104,8 @@ services:
       - OSP_REDIS_PORT=6379
       - OSP_REDIS_PASSWORD=
       - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      - OSP_PASS_SALT=
+      - OSP_FLASK_SECRET=
       # - TZ=ETC/UTC
     networks:
       - osphub
@@ -122,6 +128,8 @@ services:
       - OSP_REDIS_PORT=6379
       - OSP_REDIS_PASSWORD=
       - OSP_HUB_DB=mysql+pymysql://osp:REPLACEOSPDBPASSWORD@osphub_db/osp
+      - OSP_PASS_SALT=
+      - OSP_FLASK_SECRET=
       # - TZ=ETC/UTC
     networks:
       - osphub
