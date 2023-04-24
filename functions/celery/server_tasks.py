@@ -4,7 +4,7 @@ from celery.result import AsyncResult
 import datetime
 import logging
 
-from classes import servers, channels
+from classes import servers, channels, sec
 from functions import server_func
 
 from classes.shared import celery, db
@@ -57,31 +57,34 @@ def check_server_hub_channels(self, serverId):
     existingIds = [x.channelLocation for x in channels.channel.query.filter_by(serverId=serverId).with_entities(channels.channel.channelLocation).all()]
 
     for result in results:
-        returnedIds.append(result['channelEndpointID'])
-        
-        isLive = False
-        if len(result['stream']) > 0:
-            isLive = True
+        # Check Sent Channels Against Banned List
+        bannedChannelQuery = sec.BannedChannel.query.filter_by(channelUUID=result['channelEndpointID']).first()
+        if bannedChannelQuery is None:
+            returnedIds.append(result['channelEndpointID'])
+            
+            isLive = False
+            if len(result['stream']) > 0:
+                isLive = True
 
-        existingChannel = channels.channel.query.filter_by(serverId=serverId, channelLocation=result['channelEndpointID']).with_entities(channels.channel.id).first()
-        if existingChannel is None:
-            newChan = (
-                channels.channel(serverId, result['channelName'], result['owningUsername'], result['description'], result['channelEndpointID'], result['channelImage'], isLive))
-            db.session.add(newChan)
-        else:
-            channels.channel.query.filter_by(id=existingChannel.id).update(dict(
-                    serverId = serverId,
-                    channelName = result['channelName'],
-                    channelDescription =  result['description'],
-                    channelOwnerUsername = result['owningUsername'],
-                    channelOwnerPicture = result['owningUserImage'],
-                    channelLocation = result['channelEndpointID'],
-                    channelViewers = result['currentViews'],
-                    channelLive = isLive,
-                    channelLastUpdated = datetime.datetime.now(),
-                    channelImage = result['channelImage'],
-                    channelNSFW = result['hubNSFW']
-            ))
+            existingChannel = channels.channel.query.filter_by(serverId=serverId, channelLocation=result['channelEndpointID']).with_entities(channels.channel.id).first()
+            if existingChannel is None:
+                newChan = (
+                    channels.channel(serverId, result['channelName'], result['owningUsername'], result['description'], result['channelEndpointID'], result['channelImage'], isLive))
+                db.session.add(newChan)
+            else:
+                channels.channel.query.filter_by(id=existingChannel.id).update(dict(
+                        serverId = serverId,
+                        channelName = result['channelName'],
+                        channelDescription =  result['description'],
+                        channelOwnerUsername = result['owningUsername'],
+                        channelOwnerPicture = result['owningUserImage'],
+                        channelLocation = result['channelEndpointID'],
+                        channelViewers = result['currentViews'],
+                        channelLive = isLive,
+                        channelLastUpdated = datetime.datetime.now(),
+                        channelImage = result['channelImage'],
+                        channelNSFW = result['hubNSFW']
+                ))
     for existing in existingIds:
         if existing not in returnedIds:
             channels.channel.query.filter_by(channelLocation=existing).delete()
