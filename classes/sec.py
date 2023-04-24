@@ -1,3 +1,4 @@
+import datetime
 from flask_security import UserMixin, RoleMixin, AsaList
 from sqlalchemy.ext.mutable import MutableList
 
@@ -36,3 +37,14 @@ class User(db.Model, UserMixin):
     roles = db.relationship(
         "Role", secondary=roles_users, backref=db.backref("users", lazy="dynamic")
     )
+    
+class BannedChannel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    channelUUID = db.Column(db.String(255), unique=True)
+    timestamp = db.Column(db.DateTime)
+    comment = db.Column(db.String(2048))
+
+    def __init__(self, channelUUID, comment):
+        self.channelUUID = channelUUID
+        self.comment = comment
+        self.timestamp = datetime.datetime.now()
