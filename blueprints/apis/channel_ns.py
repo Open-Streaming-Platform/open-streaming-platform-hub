@@ -35,6 +35,7 @@ class api_server_live(Resource):
                 servers.server.serverAddress,
                 servers.server.serverName,
                 servers.server.serverLastUpdate,
+                servers.server.serverActive,
                 channels.channel.channelLocation,
                 channels.channel.channelImage,
                 channels.channel.channelName,
@@ -49,21 +50,22 @@ class api_server_live(Resource):
         )
         returnArray = []
         for chan in channelQuery:
-            val = {
-                "serverProtocol": chan.serverProtocol,
-                "serverAddres": chan.serverAddress,
-                "serverName": chan.serverName,
-                "serverLastUpdate": str(chan.serverLastUpdate),
-                "channelLocation": chan.channelLocation,
-                "channelImage": chan.channelImage,
-                "channelName": chan.channelName,
-                "channelDescription": chan.channelDescription,
-                "channelOwnerUsername": chan.channelOwnerUsername,
-                "channelOwnerPicture": chan.channelOwnerPicture,
-                "channelViewers": chan.channelViewers,
-                "channelLastUpdated": str(chan.channelLastUpdated),
-                "channelNSFW": chan.channelNSFW
-            }
-            returnArray.append(val)
+            if chan.ServerActive is True:
+                val = {
+                    "serverProtocol": chan.serverProtocol,
+                    "serverAddres": chan.serverAddress,
+                    "serverName": chan.serverName,
+                    "serverLastUpdate": str(chan.serverLastUpdate),
+                    "channelLocation": chan.channelLocation,
+                    "channelImage": chan.channelImage,
+                    "channelName": chan.channelName,
+                    "channelDescription": chan.channelDescription,
+                    "channelOwnerUsername": chan.channelOwnerUsername,
+                    "channelOwnerPicture": chan.channelOwnerPicture,
+                    "channelViewers": chan.channelViewers,
+                    "channelLastUpdated": str(chan.channelLastUpdated),
+                    "channelNSFW": chan.channelNSFW
+                }
+                returnArray.append(val)
 
         return {'results': returnArray}
