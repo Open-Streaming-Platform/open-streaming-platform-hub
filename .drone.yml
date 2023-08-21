@@ -6,6 +6,7 @@ trigger:
     - nightly
   event:
     - push
+    - custom
 
 platform:
   os: linux
@@ -53,6 +54,7 @@ trigger:
     - master
   event:
     - push
+    - custom
 
 platform:
   os: linux
