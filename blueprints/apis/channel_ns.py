@@ -50,7 +50,7 @@ class api_server_live(Resource):
         )
         returnArray = []
         for chan in channelQuery:
-            if chan.ServerActive is True:
+            if chan.serverActive is True:
                 val = {
                     "serverProtocol": chan.serverProtocol,
                     "serverAddres": chan.serverAddress,
