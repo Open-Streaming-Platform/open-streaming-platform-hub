@@ -6,6 +6,7 @@ trigger:
     - nightly
   event:
     - push
+    - custom
 
 platform:
   os: linux
@@ -28,6 +29,7 @@ steps:
   when:
     event:
       - push
+      - custom
 - name: publish-test
   image: appleboy/drone-ssh
   settings:
@@ -43,6 +45,7 @@ steps:
   when:
     event:
       - push
+      - custom
 
 ---
 kind: pipeline
@@ -53,6 +56,7 @@ trigger:
     - master
   event:
     - push
+    - custom
 
 platform:
   os: linux
@@ -64,6 +68,7 @@ steps:
   when:
     event:
       - push
+      - custom
   commands:
     - echo -n "$(cat version), latest" > .tags
 - name: build
@@ -81,3 +86,4 @@ steps:
   when:
     event:
       - push
+      - custom
